@@ -1,12 +1,12 @@
 import React from 'react'
 
-export default function MainCategory() {
+export default function MainCategory({style}) {
   return (
     // daisy ui -> menu
     <>
     <div>
-    <ul className="menu bg-base-200 rounded-box block xs:hidden  sm:w-[150px] md:w-[200px] lg:w-[220px] ml-3">
-    {/* w-[120px] */}
+    <ul className={`menu bg-base-200 rounded-box block xs:hidden    ${style} ml-3`}> 
+    {/* w-[] sm:w-[150px] md:w-[200px]  // 220px for home page // 180px for seller profile*/} 
       <li>
           <div className="dropdown dropdown-hover">
           <label tabIndex={0} className="">Item 1</label>

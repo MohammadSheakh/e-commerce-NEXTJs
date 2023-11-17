@@ -19,7 +19,7 @@ export default function Home() {
         <div className=" grid grid-cols-12 ">
             <div class="col-span-3 lg:col-span-3 flex justify-start xxl:justify-end">
                 <div className='pt-[70px] '>
-              <MainCategory/>
+              <MainCategory style="lg:w-[220px]"/>
                 </div>
             </div>
             

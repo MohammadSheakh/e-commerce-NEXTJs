@@ -17,27 +17,27 @@ export default function SubNavbarOfSellerProfile() {
             
             <div className=" col-span-7   xl:col-span-8 w-full flex flex-nowrap  justify-center h-10  mt-3  relative">
             {/* xl:ml-56 lg:ml-[-20px] md:ml-[-120px] sm:ml-[-100px] h-10 relative*/}
-                <Nav path="/" styleProps="group-hover:w-10 text-PureWhite">
+                <Nav path="/seller/1" styleProps="group-hover:w-10 text-PureWhite">
                     Personal Details
                 </Nav>
                 
                 <Nav
-                    path="/about"
+                    path="/seller/1/products"
                     styleProps="group-hover:w-[50px] text-PureWhite"
                     stylePropsForBtn ="hidden lg:block"
                 >
                     Products
                 </Nav>
-                <Nav path="/projects" styleProps="group-hover:w-10">
+                <Nav path="/seller/1/categoryAndBrand" styleProps="group-hover:w-10">
                     Category And Brands
                 </Nav>
-                <Nav path="/timeline" styleProps="group-hover:w-14">
+                <Nav path="/seller/1/statistics" styleProps="group-hover:w-14">
                     Statistics
                 </Nav>
-                <Nav path="/story" styleProps="group-hover:w-10">
+                <Nav path="/seller/1/review" styleProps="group-hover:w-10">
                     Review
                 </Nav>
-                <Nav path="/achievements" styleProps="group-hover:w-24">
+                <Nav path="/seller/1/conversation" styleProps="group-hover:w-24">
                     Conversation
                 </Nav>
                 {/* <Nav path="/dashboard" styleProps="group-hover:w-20">

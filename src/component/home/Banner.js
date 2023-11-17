@@ -5,13 +5,14 @@ import Image from 'next/image'
 export default function Banner() {
   return (
     <>
-    <div style={{width: 'auto'} }>
+    <div className='rounded-lg' style={{width: 'auto'} }>
     {/* , height: '250px' */}
     
 
     {/* <img style={{ maxWidth: '700px', maxHeight: '250px'} } src={banner} alt="Image not found in public/images/home/banner.png" /> */}
 
     <Image
+      className='rounded-lg'
       src={banner}
       width={700}
       height={250}

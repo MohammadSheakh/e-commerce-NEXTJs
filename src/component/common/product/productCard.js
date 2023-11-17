@@ -6,7 +6,7 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 export default function ProductCard({productName, productImage}) {
   return (
     <>
-    <div  className="border-2  rounded-lg">
+    <div  className="border-2 rounded-lg" style={{width: "auto"}}>
       {/* //////////////////////////////////////////////////////// */}
       
       <div className="card w-96 bg-base-100 shadow-xl rounded-lg" style={{width: "290px", height:"400px"}}>
@@ -85,6 +85,7 @@ export default function ProductCard({productName, productImage}) {
          {/* relative top-[9px]  */}
         
           <div style={{marginTop: "18px"}} className=' flex justify-evenly content-center gap-4 '  >
+            {/* // logged in seller er jonno ei button gula show korbe na  */}
               <button className='btn bg-PrimaryColorDarkHover hover:bg-orange-300'> Add To cart</button>
               <button className='btn'>Place Order</button>
           </div>

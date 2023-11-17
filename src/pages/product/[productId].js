@@ -6,7 +6,7 @@ import LenovoPc124 from '../../../public/images/Products/LenovoPc124.jpg';
 import Image from 'next/image';
 import SubNavbarOfProductDetails from '@/component/common/product/subNav/SubNavbarOfProductDetails';
 
-export default function SellerProfile() {
+export default function Profile() {
   const router = useRouter();
   const {productId} = router.query;
   return (
@@ -81,4 +81,3 @@ dsd
     
   )
 }
-

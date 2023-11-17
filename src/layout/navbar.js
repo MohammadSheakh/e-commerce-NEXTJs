@@ -4,6 +4,7 @@ import Link from "next/link";
 import Nav from './Nav';
 import { MdLogin, MdNightlight } from "react-icons/md";
 import {logo} from "../../public/assets/icons/home/logo.png";
+import Image from 'next/image';
 
 export default function Navbar() {
   const [theme, setTheme] = useState(null);
@@ -44,12 +45,21 @@ useEffect(() => {
         <div className="h-14 w-full bg-navbarColorGray grid grid-cols-12 fixed z-50">
             {/* bg-slate-600 */}
             <div class="col-span-1 sm:col-span-3 xl:col-span-3 w-[210px] h-14 rounded-full group flex">
-                <Link href="/">
-                    <img
+                <Link href="/" className=" h-12 w-10 rounded-full ml-4 mt-1  hover:ring-4 hover:ring-PrimaryColorDark">
+                    {/* <img
                         class=" h-12 w-10 rounded-full ml-4 mt-1  hover:ring-4 hover:ring-PrimaryColorDark"
                         src={logo}
                         alt="Logo"
-                    />
+                    /> */}
+
+                <Image
+
+                src={logo}
+                width={40}
+                // height={200}
+                quality={75} // default is 75
+                alt="Logo"
+                />
                 </Link>
 
                 <div className="hidden md:block h-8 w-[0px] rounded-md ml-2 mt-3 pl-2 pr-2 pt-1 pb-1 invisible group-hover:w-36 group-hover:visible transition-all duration-1000 hover:duration-0 delay-0 bg-PrimaryColorLight  ">

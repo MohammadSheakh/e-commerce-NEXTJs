@@ -14,26 +14,26 @@ import Products from '@/component/common/product/products'
 export default function Home() {
   return (
     <>
-      <div className='border-2  relative'>
+      <div className=' relative'>
       {/* min-h-[300vh] */}
-        <div className="border-2  grid grid-cols-12 ">
-            <div class="col-span-3 lg:col-span-3 border-2  w-[210px] h-14 rounded-full group flex">
-                <div className='pt-[70px] border-2 bg-PrimaryColorDark'>
+        <div className=" grid grid-cols-12 ">
+            <div class="col-span-3 lg:col-span-3 flex justify-start xxl:justify-end">
+                <div className='pt-[70px] '>
               <MainCategory/>
                 </div>
             </div>
             
-            <div className="col-span-9 lg:col-span-6 border-2 ">
-              <div className='pt-[70px] border-2 bg-PrimaryColorDark'>
+            <div className="col-span-9 lg:col-span-6  ">
+              <div className='pt-[70px] '>
                 <Banner/>
               </div>
                 
-              <div class='pt-[10px] border-2 bg-PrimaryColorDark'>
+              <div class='pt-[10px] '>
                   <SearchField/>
               </div>
               
               
-              <div class='pt-[10px] border-2 bg-PrimaryColorDark'>
+              <div class='pt-[10px] '>
                   <Categories/>
               </div>
               
@@ -41,8 +41,8 @@ export default function Home() {
 
             </div>
             
-            <div class="hidden lg:block lg:col-span-3  border-2 ">
-                <div className='pt-[70px] border-2 bg-PrimaryColorDark'>
+            <div class="hidden lg:block lg:col-span-3  ">
+                <div className='pt-[70px] '>
               <MainCategory/>
             </div>
         </div> 

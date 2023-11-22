@@ -21,10 +21,10 @@ export default function SellerProducts() {
     <br/>
     <br/>
     
-    <p>productId :  {sellerId}</p>
+    {/* <p>productId :  {sellerId}</p> */}
 
 
-      <div className='border-2 '>
+      <div className=''>
       
         <SellerProfile/>
         <div className='mx-4 my-4 rounded-md bg-PrimaryColorDarkHover w-auto h-auto text-PureWhite'>

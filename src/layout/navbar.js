@@ -3,13 +3,41 @@ import { FaAlignJustify } from "react-icons/fa";
 import Link from "next/link";
 import Nav from './Nav';
 import { MdLogin, MdNightlight } from "react-icons/md";
-import {logo} from "../../public/assets/icons/home/logo.png";
+import logo from "../../public/assets/icons/home/logo.png";
+import mohammad from "../../public/images/navbar/mohammad.jpg";
 import Image from 'next/image';
+import { useAuth } from '@/utils/authcontext';
+import { useRouter } from 'next/router';
 
 export default function Navbar() {
   const [theme, setTheme] = useState(null);
-const user = null;
-  const logout = () => {
+//   const {user, logout, checkUser} = useAuth();
+  const router = useRouter();
+  const [data, setData] = useState(''); // jsonData .. default is maybe null ?
+
+//     useEffect(() => {
+//     if(user){
+//         try{
+//             getUsersInfo();
+//         }catch(err){
+//             console.log(err);
+//         }
+//     }
+//   },[])
+
+  async function getUsersInfo(){
+    try{
+      const response = await axios.get(process.env.API_ENDPOINT+'/users');
+      //console.log("response: ", response);
+      setData(response.data);
+      
+    }catch(error){
+      console.log("error:", error);
+    }
+  }
+
+const user1 = null;
+  const logout1 = () => {
     //dispatch(userLoggedOut()); // AuthSlice er userLoggedOut Action ta dispatch kore dilam ..
     localStorage.clear(); // localStorage tao clear kore dite hobe ..
     console.log("userLoggedOut is dispatched and localstorage is cleared");
@@ -46,19 +74,15 @@ useEffect(() => {
             {/* bg-slate-600 */}
             <div class="col-span-1 sm:col-span-3 xl:col-span-3 w-[210px] h-14 rounded-full group flex">
                 <Link href="/" className=" h-12 w-10 rounded-full ml-4 mt-1  hover:ring-4 hover:ring-PrimaryColorDark">
-                    {/* <img
-                        class=" h-12 w-10 rounded-full ml-4 mt-1  hover:ring-4 hover:ring-PrimaryColorDark"
-                        src={logo}
-                        alt="Logo"
-                    /> */}
+                    
 
                 <Image
-
-                src={logo}
-                width={40}
-                // height={200}
-                quality={75} // default is 75
-                alt="Logo"
+                    src={logo}
+                    width={40}
+                    // height={200}
+                    className='rounded-full'
+                    quality={75} // default is 75
+                    alt="Logo"
                 />
                 </Link>
 
@@ -117,12 +141,34 @@ useEffect(() => {
                 </button>
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         {/* <li><a href='/seller/login'>Seller</a></li> */}
-                        <li><a href='/seller/1'>Seller</a></li>
+                        <li><a href='/seller/login'>Seller</a></li>
                         
                         <li><a href='/buyer/login'>Buyer</a></li>
                         <li><a href='/admin/login'>Admin</a></li>
                     </ul>
                 </div>
+                <div>
+                <li>
+                    <Image
+                    src={logo} // mohammad
+                    width={40}
+                    // height={200}
+                    className='rounded-full ml-3'
+                    quality={75} // default is 75
+                    alt="Image Can not be shown from navbar.js"
+                    />
+                </li>
+                    
+                        
+                    
+            </div>
+            <div>
+                
+                <a href="/seller/1" className='ml-2 text-xl'>userName</a>
+            </div>
+            <Nav path="/logout" styleProps="group-hover:w-20">
+                    Logout
+                </Nav>
             </div>
             {/*
             2xl:px-[30%] -> normal -> 100% 

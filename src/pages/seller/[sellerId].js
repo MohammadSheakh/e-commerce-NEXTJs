@@ -22,10 +22,10 @@ export default function SellerProfileDetails() {
     <br/>
     <br/>
     
-    <p>productId :  {sellerId}</p>
+    {/* <p>productId :  {sellerId}</p> */}
 
 
-      <div className='border-2 '>
+      <div className=''>
       
         <SellerProfile/>
         <div className='mx-4 my-4 rounded-md bg-PrimaryColorDarkHover p-10 w-auto h-auto text-PureWhite'>

@@ -6,7 +6,7 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 export default function ProductCard({productName, productImage}) {
   return (
     <>
-    <div  className="border-2 rounded-lg" style={{width: "auto"}}>
+    <div  className=" border-2 rounded-lg" style={{width: "auto"}}>
       {/* //////////////////////////////////////////////////////// */}
       
       <div className="card w-96 bg-base-100 shadow-xl rounded-lg" style={{width: "290px", height:"400px"}}>

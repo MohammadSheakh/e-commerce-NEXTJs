@@ -25,10 +25,10 @@ export default function SellerProducts() {
     <br/>
     <br/>
     
-    <p>productId :  {sellerId}</p>
+    {/* <p>productId :  {sellerId}</p> */}
 
 
-      <div className='border-2 '>
+      <div className=''>
       
         <SellerProfile/>
         <div className=' w-auto h-auto text-PureWhite'>
@@ -40,11 +40,11 @@ export default function SellerProducts() {
           // after sales review  */}
 
           <div className="tabs tabs-lifted mx-6">
-            <input type="radio" name="my_tabs_2" className="tab w-auto bg-PrimaryColorDark hover:bg-PrimaryColorDarkHover  checked:bg-PrimaryColorLight" aria-label="Positive Review" checked />
+            <input type="radio" name="my_tabs_2" className="tab w-auto bg-PrimaryColorDark hover:bg-PrimaryColorDarkHover  checked:bg-PrimaryColorLight" aria-label="Review" checked />
             
             {/* active:bg-PrimaryColorLight */}
-            <div className="tab-content bg-base-100 border-base-300 rounded-box p-10">
-              {/* Tab content 1 */}
+            <div className="tab-content bg-base-100 border-base-300 rounded-box pt-6 ">
+              {/* Tab content 1 p-10*/}
               {/* ///////////////////////////////////////////////// */}
               
               <ReviewCard/>
@@ -56,7 +56,7 @@ export default function SellerProducts() {
               {/* ///////////////////////////////////////////////// */}
             </div>
 
-            <input type="radio" name="my_tabs_2" className="tab w-auto bg-PrimaryColorDark hover:bg-PrimaryColorDarkHover" aria-label="Negetive Review"  />
+            <input type="radio" name="my_tabs_2" className="tab w-auto bg-PrimaryColorDark hover:bg-PrimaryColorDarkHover" aria-label="Shipping And Delevery Review"  />
             <div className="tab-content bg-base-100 border-base-300 rounded-box p-10">
               {/* Tab content 2 */}
             </div>

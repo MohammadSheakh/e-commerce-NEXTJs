@@ -49,7 +49,8 @@ export default function Home() {
 
             
         </div>
-        <div className='container mx-auto'>
+        <div className=' mx-auto'>
+        {/* container 🟢🔰🔴🔗⚫ ekhane kaj korte hobe */}
           {/* // ekhane amra product gula show korbo  */}
             <Products  brandName="PC"/>
             <Products  brandName="Router"/>

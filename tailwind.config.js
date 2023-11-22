@@ -13,6 +13,7 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      scrollbar: ['dark', 'rounded'],
     },
     colors: {
       PrimaryColorDark: "#01263f",
@@ -43,6 +44,7 @@ module.exports = {
     require("daisyui"),
     require('flowbite/plugin'),
     require('@tailwindcss/forms'),
+    require('tailwind-scrollbar'),
   ],
 }
 

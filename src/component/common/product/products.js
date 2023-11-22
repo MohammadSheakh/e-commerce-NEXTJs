@@ -10,7 +10,7 @@ import TpLinkRouter560 from '../../../../public/images/Products/TpLinkRouter560.
 export default function Products({brandName}) {
   return (
     <>
-    <div className='border-2 '>
+    <div className='border-y-2'>
       <div className='text-start text-center rounded-t'  style={{marginTop:"20px", backgroundColor: "royalblue", width:"140px",  border:"1px solid red", marginBottom:"2px", marginLeft: "30px"}}>
         {/* // custom deep green color  */}
         {/* Product Category Name  */}
@@ -22,18 +22,7 @@ export default function Products({brandName}) {
         <ProductCard productName="PC" productImage = {LenovoPc124}/>
         <ProductCard productName="PC" productImage = {TpLinkRouter556}/>
         <ProductCard productName="PC" productImage = {TpLinkRouter560}/>
-        {/* <ProductCard productName="PC" productImage = {TpLinkRouter560}/>
-        <ProductCard productName="PC" productImage = {TpLinkRouter560}/>
-        <ProductCard productName="PC" productImage = {TpLinkRouter560}/>
-        <ProductCard productName="PC" productImage = {TpLinkRouter560}/> */}
-        {/* <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard /> */}
+        
       </div>
     </div>
     </>

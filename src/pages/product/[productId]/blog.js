@@ -5,7 +5,6 @@ import React from 'react'
 import LenovoPc124 from '../../../../public/images/Products/LenovoPc124.jpg';
 import Image from 'next/image';
 import SubNavbarOfProductDetails from '@/component/common/productDetails/subNav/SubNavbarOfProductDetails';
-import Specification from '@/component/common/productDetails/Specification';
 import ProductProfileInfo from '@/component/common/productDetails/productDetailsProfile/ProductProfileInfo';
 import Blogs from '@/component/common/productDetails/blog/Blogs';
 
@@ -31,7 +30,8 @@ export default function blog() {
         <SubNavbarOfProductDetails/>
 
 
-        <div className='container mt-24'>
+        <div className='container '>
+        {/* mt-24 */}
               <Blogs/>
         </div>
       </div> 

@@ -26,7 +26,7 @@ export default function SingleReceiverMessage({textAlign, message, date}) {
                             {/* Date */}
                             {date}
                     </div>
-                  <div style={{maxWidth: "200px"}} className=' w-auto break-normal  bg-PrimaryColorDark p-1 rounded-lg ml-2'>
+                  <div style={{maxWidth: "200px"}} className='border-2 w-auto break-normal  bg-PrimaryColorDark p-1 rounded-lg ml-2'>
                       {/* Receiver's text */}
                       {message}
                   </div>

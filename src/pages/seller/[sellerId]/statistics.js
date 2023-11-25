@@ -5,7 +5,7 @@ import React from 'react'
 import LenovoPc124 from '../../../../public/images/Products/LenovoPc124.jpg';
 
 import Image from 'next/image';
-import SubNavbarOfProductDetails from '@/component/common/product/subNav/SubNavbarOfProductDetails';
+import SubNavbarOfProductDetails from '@/component/common/productDetails/subNav/SubNavbarOfProductDetails';
 import SubNavbarOfSellerProfile from '@/component/seller/subNav/SubNavbarOfSellerProfile';
 import MainCategory from '@/layout/mainCategory';
 import { MdOutlineLocationCity } from "react-icons/md";

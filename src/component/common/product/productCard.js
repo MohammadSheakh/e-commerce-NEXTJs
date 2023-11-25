@@ -25,7 +25,7 @@ export default function ProductCard({productName, productImage}) {
         <div className="card-body">
             <h5 className="card-title" style={{width:"30px",height:"40px", fontSize:"18px", display:"flex", justifyContent : "space-between"}} >
               {/* // i dont know Link use korte hobe kina  */}
-              <a  style={{textAlign: "left" }}  target="_blank" href="product/@productId">
+              <a  style={{textAlign: "left" }}  target="_blank" href="/product/@productId">
                 LenovoPc123 vfvofdmvofdmvofidvdsdsddsd
               </a>
               {/* // ekhane amra dropdown button ta add korte pari */}

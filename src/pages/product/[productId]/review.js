@@ -14,6 +14,7 @@ import { FaLink } from "react-icons/fa";
 import Banner from '@/component/home/Banner';
 import SellerProfile from '@/component/seller/profile/SellerProfile';
 import ReviewCard from '@/component/common/review/reviewCard';
+import ProductProfileInfo from '@/component/common/productDetails/productDetailsProfile/ProductProfileInfo';
 
 
 export default function SellerProducts() {
@@ -30,7 +31,10 @@ export default function SellerProducts() {
 
       <div className=''>
       
-        <SellerProfile/>
+        <ProductProfileInfo/>
+
+        <SubNavbarOfProductDetails/>
+
         <div className=' w-auto h-auto text-PureWhite'>
           {/* Review */}
           {/* 

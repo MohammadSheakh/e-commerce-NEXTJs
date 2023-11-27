@@ -11,11 +11,12 @@ export default function ProductProfileInfo() {
             
             <div class="lg:col-span-3  ">
               {/* flex justify-start xxl:justify-end */}
-              <div className='pt-[70px]  flex justify-center content-center'>
+              <div className='pt-[70px]   flex justify-center content-center'>
                 {/* Main Category */}
                 {/* // product image  */}
                 <Image
                 src={LenovoPc124}
+                className='rounded-lg'
                 width={200}
                 // height={200}
                 quality={75} // default is 75

@@ -1,4 +1,5 @@
 //rfce
+import { useAuth } from "../../utils/authcontext";
 import React, { useEffect, useState } from "react";
 //import { useDispatch } from "react-redux";
 
@@ -6,8 +7,10 @@ import React, { useEffect, useState } from "react";
 
 // Link ta o niye ashte hobe .. // ekta Error page design korte hobe .. shetao niye ashte hobe ..
 
+
 function Login() {
     // component load hoile jeno user field e focus kore .. shejonno amra useRef use korte pari ..
+    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -61,6 +64,7 @@ function Login() {
 
         setError("");
 
+        
         login({
             email,
             password,

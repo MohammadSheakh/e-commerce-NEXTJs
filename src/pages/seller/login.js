@@ -1,20 +1,20 @@
 //rfce
-import { useAuth } from "../../utils/authcontext";
 import React, { useEffect, useState } from "react";
+import { useAuth } from "../../utils/authcontext";
+import axios from "axios";
 //import { useDispatch } from "react-redux";
 
 //import { useLoginMutation } from "../features/auth/authApi";
 
 // Link ta o niye ashte hobe .. // ekta Error page design korte hobe .. shetao niye ashte hobe ..
-
-
 function Login() {
     // component load hoile jeno user field e focus kore .. shejonno amra useRef use korte pari ..
-    const { login } = useAuth();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
+    const { login } = useAuth();
+    
     const [error, setError] = useState("");
 
     const { email, password } = formData; // form data theke destructure kore nilam
@@ -54,21 +54,39 @@ function Login() {
     };
 
     // Dave Gray eta ke asynchronous function boltese ... ⏳ 28:08
-    const handleSubmit = (e) => {
+    const  handleSubmit = async (e) => {
+        e.preventDefault();
          console.log(
             "Handle Submit Button clicked of Login.js",
-            email,
-            password
+             formData.email,
+             formData.password
         );
-        e.preventDefault();
+        
 
         setError("");
 
-        
-        login({
-            email,
-            password,
-        });
+        try{
+            const response = await axios.post('http://localhost:3000/seller/sellerLoginJWT',{
+              sellerEmailAddress: formData.email,
+              sellerPassword: formData.password
+            },
+            {
+              headers: { 'Content-Type': 'application/json' },
+              //withCredentials: true
+            }
+            );
+            if(response){
+              console.log("response: ", response.data.json()); // 🔰 json e convert korte hobe .. 
+              
+            }
+            
+      
+          }catch (error) {
+            console.error("Login failed:", error.message);
+            setError(error.message);
+            // Handle login error
+          }
+
     };
 
     return (

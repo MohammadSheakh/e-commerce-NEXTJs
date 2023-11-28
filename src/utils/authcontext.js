@@ -14,24 +14,41 @@ export const AuthProvider = ({ children }) => {
     //setUser({email, cookie});
     //console.log(email,password)
     const response = doLogIn(email, password);
-      console.log("response: ", response);
+      //console.log("response: ", response);
+
+      //const { access_token, userId, userName, userEmailAddress } = response.data;
+      const { data } = response;
+      //const cookie = response.headers['set-cookie'];
+      //console.log("cookie: ", cookie);
+      //console.log("access_token: ", access_token, "userId: ", userId, "userName: ", userName, "userEmailAddress: ", userEmailAddress);
+    //   setUser({
+    //     access_token,
+    //     userId,
+    //     userName,
+    //     userEmailAddress,
+    // });
   }
   async function doLogIn(){
     try{
-      const response = await axios.post(process.env.API_ENDPOINT+'sellerLoginJWT',{
+      const response = await axios.post('http://localhost:3000/seller/sellerLoginJWT',{
         sellerEmailAddress: email,
         sellerPassword: password
       },
       {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        withCredentials: false
-      });
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true
+      }
+      );
       if(response){
         console.log("response: ", response.data);
+        
       }
       
 
-    }catch(error){}
+    }catch (error) {
+      console.error("Login failed:", error.message);
+      // Handle login error
+    }
   }
 
   const checkUser = () => {

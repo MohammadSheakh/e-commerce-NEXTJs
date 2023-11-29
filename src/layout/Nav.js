@@ -3,7 +3,7 @@ import React from "react";
 
 
 export default function Nav({ children, styleProps, path,stylePropsForBtn }) {
-  console.log(children, styleProps);
+//   console.log(children, styleProps);
     return (
         <>
         

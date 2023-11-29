@@ -10,55 +10,26 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   
-  const login = (/*email, cookie*/email, password) => {
-    //setUser({email, cookie});
-    //console.log(email,password)
-    const response = doLogIn(email, password);
-      //console.log("response: ", response);
-
-      //const { access_token, userId, userName, userEmailAddress } = response.data;
-      const { data } = response;
-      //const cookie = response.headers['set-cookie'];
-      //console.log("cookie: ", cookie);
-      //console.log("access_token: ", access_token, "userId: ", userId, "userName: ", userName, "userEmailAddress: ", userEmailAddress);
-    //   setUser({
-    //     access_token,
-    //     userId,
-    //     userName,
-    //     userEmailAddress,
-    // });
+  const login = (user) => {
+    // setUser(user, cookie);
+    setUser(user);
+    //console.log("from login -> authContext 🔰 : ",user)
   }
-  async function doLogIn(){
-    try{
-      const response = await axios.post('http://localhost:3000/seller/sellerLoginJWT',{
-        sellerEmailAddress: email,
-        sellerPassword: password
-      },
-      {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: true
-      }
-      );
-      if(response){
-        console.log("response: ", response.data);
-        
-      }
-      
 
-    }catch (error) {
-      console.error("Login failed:", error.message);
-      // Handle login error
-    }
+  const getUser = () =>{
+    //console.log("user from getUser🔰 ->Navbar.js:  "+user)
+    const tokenString = localStorage.getItem('authForEcomerce');
+    const token = JSON.parse(tokenString);
+    return token;
   }
+  
 
   const checkUser = () => {
-    console.log("user:  "+user.email)
-    console.log("user:  "+user.cookie)
-    if(user.email!=null && user.cookie!=null) {
+    const token = localStorage.getItem('authForEcomerce');
+    //if(user.userEmailAddress!=null && user.cookie!=null) {
+    if(token){
       return true;
-    }
-    else
-    {
+    }else{
       return false;
     }
   }
@@ -80,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
   return (
-    <AuthContext.Provider value={{ user, login, logout, checkUser }}>
+    <AuthContext.Provider value={{user, getUser, login, logout, checkUser }}>
       {children}
     </AuthContext.Provider>
   );

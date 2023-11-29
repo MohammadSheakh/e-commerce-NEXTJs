@@ -1,13 +1,14 @@
 //rfce
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../utils/authcontext";
-import axios from "axios";
-//import { useDispatch } from "react-redux";
 
-//import { useLoginMutation } from "../features/auth/authApi";
+import { useRouter } from 'next/router';
+import api from "@/utils/api";
 
 // Link ta o niye ashte hobe .. // ekta Error page design korte hobe .. shetao niye ashte hobe ..
 function Login() {
+    
+    const router = useRouter();
     // component load hoile jeno user field e focus kore .. shejonno amra useRef use korte pari ..
     const [formData, setFormData] = useState({
         email: "",
@@ -17,35 +18,9 @@ function Login() {
     
     const [error, setError] = useState("");
 
-    const { email, password } = formData; // form data theke destructure kore nilam
+    const { email, password } = formData; 
 
-    //const navigate = useNavigate(); // home page e navigate kore dite hobe .. login er pore ..
-    //const dispatch = useDispatch(); // form submit e login action dispatch korte hobe ..
-
-    ///////////////////////////////////////////////////////// API call er hook call korte hobe .. othoba useState theke data niye eshe dekhate hobe ..
-    // // endpoints ta return kore amader ke ..
-    // const [login, { data, isLoading, error: responseError }] =
-    //     useLoginMutation();
-    // 🔺
-    //////////////////console.log("data from login.js 📓 1️⃣", data);
-
-    // useEffect er moddhe hoy new page e navigate korte hobe .. othoba kono .. error hoile .. sheta dekhaite
-    // hobe
-    // useEffect(() => {
-    //     console.log("data from login.js 📓 7️⃣", data);
-    //     // er moddhe amra chaile form focus korar o kaj korte pari .. userRef er maddhome..
-    //     if (responseError?.data) {
-    //         console.log("Response Error found .. from login.js ");
-    //         setError(responseError.data);
-    //         navigate("/"); //😎 error handle kora hoy nai password vul hoile .. login er por
-    //     }
-    //     if (data?.accessToken && data) {
-    //         //🔴🔵 && data?.user
-    //         navigate("/projects");
-    //     }
-    // }, [data, responseError, navigate]);
-
-    // jokhon form e change hobe ..
+    
     const onChange = (e) => {
         setFormData((prevState) => ({
             ...prevState,
@@ -56,19 +31,15 @@ function Login() {
     // Dave Gray eta ke asynchronous function boltese ... ⏳ 28:08
     const  handleSubmit = async (e) => {
         e.preventDefault();
-         console.log(
-            "Handle Submit Button clicked of Login.js",
-             formData.email,
-             formData.password
-        );
         
-
         setError("");
 
         try{
-            const response = await axios.post('http://localhost:3000/seller/sellerLoginJWT',{
-              sellerEmailAddress: formData.email,
-              sellerPassword: formData.password
+            const response = await api.post('http://localhost:3000/seller/sellerLoginJWT',{
+              //sellerEmailAddress: formData.email,
+              // sellerPassword: formData.password
+              sellerEmailAddress : e.target[0].value,
+              sellerPassword : e.target[1].value
             },
             {
               headers: { 'Content-Type': 'application/json' },
@@ -76,15 +47,54 @@ function Login() {
             }
             );
             if(response){
-              console.log("response: ", response.data.json()); // 🔰 json e convert korte hobe .. 
-              
+               
+              const user = {
+                userId: response.data.userId,
+                userName: response.data.userName,
+                userEmailAddress: response.data.userEmailAddress,
+                accessToken: response.data.access_token,
+                };
+
+                //console.log("user from back-end : ", user)
+
+                const loggedInUser = {
+                    accessToken: response.data.access_token,
+                    userId : response.data.userId,
+                }
+
+                //console.log("loggedInUser from back-end : ", loggedInUser)
+                
+                localStorage.setItem(
+                    "authForEcomerce",
+                    JSON.stringify({
+                        accessToken: response.data.access_token,
+                        user: user,
+                        userId: user.userId,
+
+                    })
+                );
+
+                 // ekhon amra session e access token and userId rekhe dibo .. 
+
+                // login korar shomoy e for the first time cookie check korbo .. 
+                // cookie thakle profile page e redirect kore dibo ... 
+
+                
+                login(user);
+                
+                router.push(user.userId);
+                // '/seller/'+
+
+
+
+               
+
+
             }
-            
-      
           }catch (error) {
             console.error("Login failed:", error.message);
-            setError(error.message);
-            // Handle login error
+            setError("Credential is Wrong");
+            
           }
 
     };

@@ -6,41 +6,62 @@ import { MdLogin, MdNightlight } from "react-icons/md";
 import logo from "../../public/assets/icons/home/logo.png";
 import mohammad from "../../public/images/navbar/mohammad.jpg";
 import Image from 'next/image';
-import { useAuth } from '@/utils/authcontext';
+import api from '@/utils/api';
+
 import { useRouter } from 'next/router';
+import { useAuth } from '@/utils/authcontext';
+import { loadGetInitialProps } from 'next/dist/shared/lib/utils';
 
 export default function Navbar() {
+const { getUser, checkUser } = useAuth();
   const [theme, setTheme] = useState(null);
-//   const {user, logout, checkUser} = useAuth();
+ const [user, setUser] = useState(null);
+ const [user1, setUser1] = useState(null);
+ const [data, setData] = useState(null);
   const router = useRouter();
-  const [data, setData] = useState(''); // jsonData .. default is maybe null ?
+  // const [data, setData] = useState(''); // jsonData .. default is maybe null ?
+  // const [user, setUser] = useState(''); 
+  
 
-//     useEffect(() => {
-//     if(user){
-//         try{
-//             getUsersInfo();
-//         }catch(err){
-//             console.log(err);
-//         }
-//     }
-//   },[])
+    useEffect(() => {
+        //console.log("In navbar.js useEffect 🟢", user)
+        //const token = getUser();
+        const tokenString = localStorage.getItem('authForEcomerce');
+        const token = JSON.stringify(tokenString);
+        setUser(token);
+        setUser1(JSON.parse(tokenString));
+
+        //console.log("In navbar.js useEffect 🟢 user : ", user1)
+        if(token){
+            getUsersInfo();
+        }
+
+        const u = JSON.parse(user);
+        //console.log("u1 : 🔰🔗", JSON.parse(tokenString)?.accessToken)
+        //console.log("u2 : 🔰🔗", user1?.accessToken)
+        
+    },[])
 
   async function getUsersInfo(){
     try{
-      const response = await axios.get(process.env.API_ENDPOINT+'/users');
+        console.log("user1?.userId : ", user1?.userId)
+      const response = await api.get(14);
       //console.log("response: ", response);
       setData(response.data);
+      console.log("=====getUsersInfo====",response.data);
       
     }catch(error){
       console.log("error:", error);
     }
   }
 
-const user1 = null;
-  const logout1 = () => {
+//const user1 = null;
+  const logout = () => {
+    setUser(null);
+    setUser1(null);
     //dispatch(userLoggedOut()); // AuthSlice er userLoggedOut Action ta dispatch kore dilam ..
     localStorage.clear(); // localStorage tao clear kore dite hobe ..
-    console.log("userLoggedOut is dispatched and localstorage is cleared");
+    //console.log("userLoggedOut is dispatched and localstorage is cleared");
 };
 
   useEffect(() => {
@@ -129,8 +150,10 @@ useEffect(() => {
                 <Nav path="/dashboard" styleProps="group-hover:w-20">
                     Blog
                 </Nav>
-                <div className="dropdown">
-                    <button tabIndex={0} className="text-orange group w-auto ml-3 h-7 leading-6 rounded-md pl-2 pr-2 bg-PureWhite hover:shadow hover:shadow-homeColor">
+                {!user1?.userId  && (
+                    <>
+                    <div className="dropdown">
+                    <button  tabIndex={0} className="text-orange group w-auto ml-3 h-7 leading-6 rounded-md pl-2 pr-2 bg-PureWhite hover:shadow hover:shadow-homeColor">
                     Login
                     <span>
                         {" "}
@@ -147,6 +170,9 @@ useEffect(() => {
                         <li><a href='/admin/login'>Admin</a></li>
                     </ul>
                 </div>
+                    </>
+                )}
+                
                 <div>
                 <li>
                     <Image
@@ -164,11 +190,24 @@ useEffect(() => {
             </div>
             <div>
                 
-                <a href="/seller/1" className='ml-2 text-xl'>userName</a>
+                <a href={`/seller/${user1?.userId}`} className='ml-2 text-xl'>
+                    {/* userName */}
+                    {user1?.user?.userName}
+                </a>
             </div>
-            <Nav path="/logout" styleProps="group-hover:w-20">
+            {/* // logout logo  */}
+
+            {user1?.userId  && (
+                <Nav  path="/" styleProps="group-hover:w-20">
+                    {/* /logout */}
+                    <span onClick={logout}>
                     Logout
+                    </span>
+                    
                 </Nav>
+            )}
+
+            
             </div>
             {/*
             2xl:px-[30%] -> normal -> 100% 
@@ -183,54 +222,3 @@ useEffect(() => {
 );
 }
 
-
-{/* <div class="hidden md:block xl:col-span-1  col-span-2 sm:col-span-1 md:col-span-1 w-full flex mt-2 h-10 ">
-                
-                <div class="group h-10 w-auto  absolute ">
-                    <button
-                        class="bg-PrimaryColorLight h-10 w-10" // bg-slate-100
-                        onClick={handleThemeSwitch}
-                    >
-                        <MdNightlight />
-                        
-                    </button>
-                    <span class=" relative  top-6 right-16  p-1 rounded-md invisible  group-hover:text-PureWhite group-hover:visible bg-tooltip ">
-                        Night mode
-                    </span>
-                </div>
-                <div class="group h-10 rounded-full w-auto ml-14 absolute ">
-                    <Link
-                        to="/login"
-                        class=" bg-slate-800 h-10 w-10 rounded-full"
-                    >
-                        
-                        <MdLogin/>
-                    </Link>
-                    <span class="relative h-10 w-0 top-1  p-1 rounded-md invisible group-hover:w-36 group-hover:visible bg-tooltip group-hover:text-PureWhite">
-                        Author Sign in
-                    </span>
-                </div>
-                
-                {user ? (
-                   
-                    <>
-                        <div class="group h-10 rounded-full w-auto ml-28 absolute ">
-                            <span
-                                onClick={logout}
-                                class=" bg-slate-800 h-10 w-10 rounded-full"
-                            >
-                                
-                                <img
-                                    src={logoutIcon}
-                                    class=" h-10 w-auto "
-                                />
-                            </span>
-                            <span class="relative h-10 w-0 top-1  p-1 rounded-md invisible group-hover:w-36 group-hover:visible bg-tooltip group-hover:text-PureWhite">
-                                Logout
-                            </span>
-                        </div>
-                    </>
-                ) : (
-                    <></>
-                )}
-            </div> */}

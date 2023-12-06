@@ -32,6 +32,31 @@ function Login() {
 
     
     const onChange = (e) => {
+        // onChange e validation korte hobe .. 
+        if(e.target.name === "email"){
+            if(!e.target.value){
+                setError("Email Can not be empty");
+            }
+            else if (!e.target.value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+                setError("Please provide valid email format");
+                
+            }else{
+                setError("");
+            }
+        }
+
+        if(e.target.name === "password"){
+            if(!e.target.value){
+                setError("Password Can not be empty");
+                
+            }
+            else if (e.target.value < 4) {
+                setError("Password must be at least 4 characters");
+            }else{
+                setError("");
+            }
+        }
+
         setFormData((prevState) => ({
             ...prevState,
             [e.target.name]: e.target.value, // ei ta xoss way to play with form data
@@ -42,27 +67,38 @@ function Login() {
     const  handleSubmit = async (e) => {
         console.log(formData);
         e.preventDefault();
-        // if (!e.target[0].value || !e.target[1].value) {
-        //     console.log(e.target[0].value  + " " + e.target[1].value)
-        //     setError("Email And Password Can not be empty");
-        //     return;
-        // }
-        // if (!e.target[1].value.length > 3) {
-        //     setError("Password must be at least 4 characters");
-        //     return;
-        // }
-        // // i need regular expression to check email validation ..
-        // if (!e.target[0].value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
-        //     setError("Please provide valid email format");
-        //     return;
-        // }
+        if (!e.target[0].value && !e.target[1].value) {
+            console.log(e.target[0].value  + " " + e.target[1].value)
+            setError("Email And Password Can not be empty");
+            return;
+        }
+        if (!e.target[0].value) {
+            console.log(e.target[0].value  + " " + e.target[1].value)
+            setError("Email Can not be empty");
+            return;
+        }
+        if (!e.target[1].value) {
+            console.log(e.target[1].value  + " " + e.target[1].value)
+            setError("Password Can not be empty");
+            return;
+        }
+        if (!e.target[1].value.length > 3) {
+            setError("Password must be at least 4 characters");
+            return;
+        }
+        // i need regular expression to check email validation ..
+        if (!e.target[0].value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i)) {
+            setError("Please provide valid email format");
+            return;
+        }
         
         setError("");
 
        
 
-        try{
-            const response = await axios.post('/seller/sellerLoginJWT',{
+        try{ 
+            
+            const response = await axios.post('http://localhost:3000/seller/sellerLoginJWT',{
               //sellerEmailAddress: formData.email,
               // sellerPassword: formData.password
               sellerEmailAddress : e.target[0].value,
@@ -117,7 +153,7 @@ function Login() {
             }
           }catch (error) {
             console.error("Login failed:", error.message);
-            setError("Credential is Wrong from catch");
+            setError("Credential is Wrong");
             
           }
 

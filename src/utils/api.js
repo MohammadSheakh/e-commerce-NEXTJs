@@ -8,8 +8,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
     //'Authorization': `Bearer ${localStorage.getItem('authForEcomerce')}`,
-    'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk`,
-  },
+    },
   // transformRequest: [function (data, headers) {
   //   // Do whatever you want to transform the data
 
@@ -24,23 +23,23 @@ const api = axios.create({
 });
 
 // Add a request interceptor
-api.interceptors.request.use(
-  (config) => {
+// api.interceptors.request.use(
+//   (config) => {
     
-    const  tokenString = localStorage.getItem('authForEcomerce');    
-      console.log("🔗 tokenString from transform Request 🟢 : ",  tokenString );
+//     const  tokenString = localStorage.getItem('authForEcomerce');    
+//       console.log("🔗 tokenString from transform Request 🟢 : ",  tokenString );
       
 
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${ JSON.parse(tokenString).accessToken}`;
-    }
-    return config;
-  },
-  (error) => {
-    // Handle request error
-    return Promise.reject(error);
-  }
-);
+//     if (token) {
+//       config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     // Handle request error
+//     return Promise.reject(error);
+//   }
+// );
 
 export default api;

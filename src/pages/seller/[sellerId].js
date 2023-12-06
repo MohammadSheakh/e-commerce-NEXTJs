@@ -49,7 +49,8 @@ export default function SellerProfileDetails() {
       
 
       const tokenString = localStorage.getItem('authForEcomerce');    
-      console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString).accessToken );
+      //console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString).accessToken );
+      console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString) );
       
 
       const getSellerDataFromBackEnd = async(token) =>{
@@ -105,40 +106,80 @@ const handleSubmit = async (e) => {
 
   try{
     const tokenString = localStorage.getItem('authForEcomerce');  
-    console.log(sellerData);  
-      console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString).accessToken );
+    console.log("sellerData : 🟢",sellerData);  
+      //console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString).accessToken );
       
-      const response = await axios.patch('/seller/14',
-        {
-          sellerName: "te",
-          //sellerEmailAddress: "",
-          // sellerPassword: "",
-          // sellerPhoneNumber:"",
-          // sellerDescription: "",
-          // sellerImage: "",
-          // shopName: "",
-          // shopDescription: "",
-          // shopLogo: "",
-          // shopName: "",
-          // status: "",
-          // rating:"",
-          // offlineShopAddress: "",
-          // googleMapLocation: "",
-          
-        }
+      const user =
+      {
+        sellerName: "te",
+        //sellerEmailAddress: "",
+        // sellerPassword: "",
+        // sellerPhoneNumber:"",
+        // sellerDescription: "",
+        // sellerImage: "",
+        // shopName: "",
+        // shopDescription: "",
+        // shopLogo: "",
+        // shopName: "",
+        // status: "",
+        // rating:"",
+        // offlineShopAddress: "",
+        // googleMapLocation: "",
+        
+      }
+
+      // const response = await api.patch('/seller/14',
+      // user, 
+      // {
+      //   headers: { Authorization: `Bearer ${JSON.parse(tokenString).accessToken}`, },
+      // }
+      // );
+      // if(response){
+      //   console.log("done after form submitting 🔰🔰 : ",response.data)
+        
+      // }
+      
+
+
+      const response = await axios.patch('http://localhost:3000/seller/update/14',
+      sellerData
       ,
       {
-        headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk`, },
+        //headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk`,
+        headers: { Authorization: `Bearer ${JSON.parse(tokenString).accessToken}`,
+        
+        "Cache-Control": "no-cache",
+      },
         
       }
       );
       if(response){
-        console.log("done after form submitting 🔰🔰 : ",response)
-        //router.push("/");
+        console.log("done after form submitting 🔰🔰 : ",response.data)
+
+        // const user = {
+        //   userId: JSON.parse(tokenString)?.userId,
+        //   userName: JSON.parse(tokenString)?.user?.userName,
+        //   userEmailAddress: JSON.parse(tokenString)?.user?.userEmailAddress,
+        //   accessToken: JSON.parse(tokenString)?.accessToken,
+        //   };
+
+        // const loggedInUser = {
+        //   accessToken:  JSON.parse(tokenString)?.accessToken,
+        //   user: user,
+        //   userId: JSON.parse(tokenString)?.userId,
+        // }
+
+        //   localStorage.setItem(
+        //       "authForEcomerce",
+        //       JSON.stringify(
+        //         loggedInUser
+        //       )
+        //   );
+        
       }
       
-      // console.log("from handle submit : ", sellerData);
 
+      
 
     }catch (error) {
       console.error("FormSubmission failed from [sellerId].js : ",  error.message);

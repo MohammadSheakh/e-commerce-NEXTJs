@@ -3,7 +3,12 @@ import React from 'react'
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 
 
-export default function ProductCard({productName, productImage}) {
+export default function ProductCard({product}) {
+  //const {productName, productImage} = props;
+
+  console.log("=========",product)
+
+  const {id, name, price, productImage} = product;
   return (
     <>
     <div  className=" border-2 rounded-lg" style={{width: "auto"}}>
@@ -23,10 +28,11 @@ export default function ProductCard({productName, productImage}) {
             </div>
         </figure>
         <div className="card-body">
-            <h5 className="card-title" style={{width:"30px",height:"40px", fontSize:"18px", display:"flex", justifyContent : "space-between"}} >
-              {/* // i dont know Link use korte hobe kina  */}
-              <a  style={{textAlign: "left" }}  target="_blank" href="/product/@productId">
-                LenovoPc123 vfvofdmvofdmvofidvdsdsddsd
+            <h5 className="card-title flex justify-between" style={{width:"auto",height:"40px", fontSize:"18px"}} >
+              {/* , display:"flex", justifyContent : "space-between" */}
+              <a   target="_blank" href={`/product/${id}`}>
+                {/* style={{textAlign: "left" }}  */}
+                {name}
               </a>
               {/* // ekhane amra dropdown button ta add korte pari */}
                 {/* //////////////////////// */}
@@ -39,8 +45,8 @@ export default function ProductCard({productName, productImage}) {
                     <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                         {/* if (Session["userType"] == "Seller" && product.sellerId == Convert.ToInt32(Session["userid"])) */}
                              {/* { */}
-                                 <li><a className="dropdown-item" href="Product/updateOneProductDetails/@product.id">Update Details</a></li>
-                                 <li><a className="dropdown-item text-danger" href="Product/deleteProduct/@product.id">Delete</a></li>
+                                 <li><a className="dropdown-item" href={`Product/updateOneProductDetails/${id}`}>Update Details</a></li>
+                                 <li><a className="dropdown-item text-danger" href={`Product/deleteProduct/${id}`}>Delete</a></li>
 
                              {/* } */}
                              {/* if (Session["userType"] == "User") */}
@@ -67,7 +73,7 @@ export default function ProductCard({productName, productImage}) {
 
                      <div className="flex">
                          <h6>৳</h6>
-                         <h6>220 &nbsp;&nbsp;</h6>
+                         <h6>{price} &nbsp;&nbsp;</h6>
                          &nbsp;
                          &nbsp;
                          &nbsp;

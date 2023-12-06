@@ -200,7 +200,7 @@ const handleSubmit = async (e) => {
 
       <div className=''>
       
-        <SellerProfile/>
+        <SellerProfile shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
         <div className='mx-4 my-4 rounded-md bg-PrimaryColorDarkHover p-10 w-auto h-auto text-PureWhite'>
           {/* Personal Details */}
           {/* // ekhane amra seller er details dekhabo and edit korar option dibo  */}

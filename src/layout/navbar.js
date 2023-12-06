@@ -24,22 +24,16 @@ const { getUser, checkUser } = useAuth();
   
 
     useEffect(() => {
-        //console.log("In navbar.js useEffect 🟢", user)
-        //const token = getUser();
         const tokenString = localStorage.getItem('authForEcomerce');
-        const token = JSON.stringify(tokenString);
-        setUser(token);
         setUser1(JSON.parse(tokenString));
-
-        //console.log("In navbar.js useEffect 🟢 user : ", user1)
-        if(token){
-            getUsersInfo();
-        }
-
-        const u = JSON.parse(user);
-        //console.log("u1 : 🔰🔗", JSON.parse(tokenString)?.accessToken)
-        //console.log("u2 : 🔰🔗", user1?.accessToken)
+        // const u = JSON.parse(user);
         
+        
+        //const token = JSON.stringify(tokenString);
+        //setUser(token);
+        // if(token){
+        //     getUsersInfo();
+        // }
     },[])
 
   async function getUsersInfo(){
@@ -48,7 +42,7 @@ const { getUser, checkUser } = useAuth();
       const response = await api.get(14);
       //console.log("response: ", response);
       setData(response.data);
-      console.log("=====getUsersInfo====",response.data);
+    //   console.log("=====getUsersInfo====",response.data);
       
     }catch(error){
       console.log("error:", error);

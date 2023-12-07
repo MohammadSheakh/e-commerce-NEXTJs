@@ -38,6 +38,7 @@ export default function SellerProfileDetails() {
     googleMapLocation: "",
     
   });
+  const [tokenString, setTokenString] = useState(null);
   // ekhon user logged in thakle .. tar jonno .. shob data .. database theke pull kore niye ashbo axios 
   // er maddhome ..  
 
@@ -105,7 +106,8 @@ const handleSubmit = async (e) => {
 
 
   try{
-    const tokenString = localStorage.getItem('authForEcomerce');  
+    const tokenString = localStorage.getItem('authForEcomerce'); 
+    setTokenString(tokenString); 
     console.log("sellerData : 🟢",sellerData);  
       //console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString).accessToken );
       
@@ -200,7 +202,7 @@ const handleSubmit = async (e) => {
 
       <div className=''>
       
-        <SellerProfile shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
+        <SellerProfile userId={tokenString?.userId} shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
         <div className='mx-4 my-4 rounded-md bg-PrimaryColorDarkHover p-10 w-auto h-auto text-PureWhite'>
           {/* Personal Details */}
           {/* // ekhane amra seller er details dekhabo and edit korar option dibo  */}

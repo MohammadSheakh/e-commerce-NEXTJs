@@ -20,6 +20,7 @@ export default function SellerProducts() {
   const [brand, setBrand] = useState(null); // from DB
   const [selectCategories, setSelecteCategories] = useState([]);  // post to DB
   const [selectedCategoriesFromDB, setSelectedCategoriesFromDB] = useState(null); // from DB 
+  const [selectedCategoriesId, setSelectedCategoryId] = useState(null);
 
   useEffect(()=>{
     // ekhane amra category and brand gula DB theke niye ashbo 
@@ -80,6 +81,9 @@ export default function SellerProducts() {
       if(response){
         console.log("reponse from selectedCategory : ", response?.data)
         setSelectedCategoriesFromDB(response?.data);
+        const selectedCategoryId = response?.data?.map((category)=>{return category.categoryId.CategoryID});
+        console.log("selectedCategoryId : ",selectedCategoryId);
+        setSelectedCategoryId(selectedCategoryId);
       }
       }
       
@@ -121,6 +125,27 @@ export default function SellerProducts() {
   //       console.log("selected Category elif : ",selectCategories);
   //   }
   // };
+
+  const isChecked = (e) => {
+    if (e.target.checked === false) {
+        // if (e.target.value !== " ") {
+          
+        // }
+        e.target.checked = true;
+        
+    } 
+
+    // setSelecteCategories((prevState) => ({
+          //       ...prevState,
+          //       [e.target.name]: e.target.value,
+                
+          //   }));
+
+          //console.log("selected Category if: ",selectCategories);
+  };
+
+
+  
 
   
   const handleCategoryChange = (categoryId) => {
@@ -242,7 +267,19 @@ export default function SellerProducts() {
                             
                             <div>
                             {/* <input type='checkbox' id={category.CategoryID} name={category.name} value={category.name} onChange={handleCategory} className='rounded-sm'/> <span>{category.name}</span> */}
-                            <input type='checkbox' id={category.CategoryID} name={category.name} value={category.CategoryID} onChange={() => handleCategoryChange(category.CategoryID)} className='rounded-sm'/> <span>{category.name}</span>
+                            <input type='checkbox' id={category.CategoryID} checked={
+                              ()=>{
+                                if(selectedCategoriesId.includes(category.CategoryID)){
+                                  console.log(category.CategoryID)
+                                  return true;
+                                }else{
+                                  console.log(category.CategoryID)
+                                  return false;
+                                }
+                                
+                              }
+                               
+                            } name={category.name} value={category.CategoryID} onChange={() => handleCategoryChange(category.CategoryID)} className='rounded-sm'/> <span>{category.name}</span>
                             
                             </div>
                             

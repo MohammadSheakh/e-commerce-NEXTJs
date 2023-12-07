@@ -1,6 +1,6 @@
 import Navbar from '@/layout/navbar';
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import LenovoPc124 from '../../../../public/images/Products/LenovoPc124.jpg';
 import Image from 'next/image';
@@ -15,7 +15,16 @@ import SubNavbarOfSellerProfile from '../subNav/SubNavbarOfSellerProfile';
 export default function SellerProfile(props) {
   //<SellerProfile shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
         
-  const {shopName,offlineShopAddress,shopGoogleMapLink } =  props;
+  
+  const {shopName,offlineShopAddress,shopGoogleMapLink, userId } =  props;
+
+  const [tokenString, setTokenString] = useState(null);
+
+  useEffect(() => {
+    const tokenString = localStorage.getItem('authForEcomerce');    
+    setTokenString(JSON.parse(tokenString));
+  },[])
+
   // const router = useRouter();
   // const {sellerId} = router.query;
   return (
@@ -75,7 +84,7 @@ export default function SellerProfile(props) {
             
         </div>
         {/* // ekhon amra product er subNavbar er design korbo  */}
-        <SubNavbarOfSellerProfile/>
+        <SubNavbarOfSellerProfile userId={tokenString?.userId}/>
         
     </>
     

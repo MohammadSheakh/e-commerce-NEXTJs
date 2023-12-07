@@ -8,7 +8,9 @@ import SingleReceiver from './SingleReceiver';
 import SingleSender from './SingleSender';
 
 
-export default function ConversationBody() {
+export default function ConversationBody({loggedInUserEmail}) {
+  // ekta  conversation e click korle shei conversation er shob message gula dekhabe .. 
+  // so, shob message gula load korte hobe ..  show All Message of a conversation
   return (
     <>
     

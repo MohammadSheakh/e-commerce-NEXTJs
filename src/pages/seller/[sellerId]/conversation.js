@@ -1,6 +1,6 @@
 import Navbar from '@/layout/navbar';
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Image from 'next/image';
 import SubNavbarOfProductDetails from '@/component/common/productDetails/subNav/SubNavbarOfProductDetails';
@@ -17,6 +17,16 @@ import ConversationBody from '@/component/seller/conversation/conversationBody';
 export default function SellerProducts() {
   const router = useRouter();
   const {sellerId} = router.query;
+  const [loggedInUserEmail, setLoggedInUserEmail] = useState(null);
+
+  useEffect(() => {
+    // current logged in user email lagbe .. 
+    const tokenString = localStorage.getItem('authForEcomerce');
+    const loggedInUserEmail1 = JSON.parse(tokenString).user.userEmailAddress;
+    setLoggedInUserEmail(loggedInUserEmail1);
+    // console.log("loggedInUserEmail", JSON.parse(tokenString).user.userEmailAddress)
+  },[])
+
   return (
     <>
     <br/>
@@ -34,15 +44,13 @@ export default function SellerProducts() {
           <div className='flex justify-center'>
               {/* conversation List */}
               <div className='w-[300px] rounded-md h-auto bg-PrimaryColorDark'>
-                <Conversations/>
+                <Conversations loggedInUserEmail={loggedInUserEmail}/>
               </div>
               {/* converation body */}
               <div className='w-[900px] rounded-md  h-96 bg-navbarColorGray'>
-                <ConversationBody/>
+                <ConversationBody loggedInUserEmail={loggedInUserEmail}/>
               </div>
           </div>
-          
-          
         </div>
       </div> 
     </>

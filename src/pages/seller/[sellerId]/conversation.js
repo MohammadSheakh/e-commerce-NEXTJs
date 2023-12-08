@@ -25,7 +25,18 @@ export default function SellerProducts() {
 
   // for conversation list
   const [conversationList, setConversationList] = useState([]); // from DB
-  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState([]);// null chilo 
+  
+
+  const [formData, setFormData] = useState({
+    message: "",
+    receiverEmail: "",
+    senderEmail: "",
+  });
+
+  const [senderEmail, setSenderEmail] = useState(null);
+  const [receiverEmail, setReceiverEmail] = useState(null);
+   
 
   useEffect(() => {
     // current logged in user email lagbe .. 
@@ -33,7 +44,12 @@ export default function SellerProducts() {
     const loggedInUserEmail1 = JSON.parse(tokenString).user.userEmailAddress;
     setLoggedInUserEmail(loggedInUserEmail1);
     // console.log("loggedInUserEmail", JSON.parse(tokenString).user.userEmailAddress)
-  },[])
+    //console.log("selected conversation 🟢🟢🟢: ", selectedConversation)
+
+
+    
+      
+  },[])//messageList
 
 
   useEffect(() => {
@@ -64,30 +80,57 @@ export default function SellerProducts() {
     //console.log("conversation clicked .. ", conversation);
     setSelectedConversation(conversation);
     setConversationId(conversation.conversationId); ////////////////////////////////////////////////
+    // ekhane amra senderEmail and receiverEmail set korte hobe ..
+
+    // messageList.map((message, index) => {
+    //   //console.log(message);
+    //   if(message.senderEmail == loggedInUserEmail) {
+    //     setSenderEmail(message.senderEmail);
+    //   }else if (message.receiverEmail == loggedInUserEmail){
+    //     setSenderEmail(message.receiverEmail);
+    //   }else if(message.senderEmail != loggedInUserEmail){
+    //     setReceiverEmail(message.senderEmail);
+    //   }else if(message.receiverEmail != loggedInUserEmail){
+    //     setReceiverEmail(message.receiverEmail);
+    //   };
+    // });
+
+
+    //🟢🟢🟢 console.log(conversation);
+    //🟢🟢🟢 conversation.sellerEmailAddress is receiverEmail  
+    //🟢🟢🟢 loggedin userEmail is senderEmail
+    setSenderEmail(loggedInUserEmail);
+    setReceiverEmail(conversation.sellerEmailAddress);
+
+    
   };
 
 
   //////////////// 🟢🟢🟢🟢🟢  console.log("selected conversation id : ", selectedConversation?.id);
-  const [conversationId, setConversationId] = useState(null);
+  const [conversationId, setConversationId] = useState(null); // age null chilo
   const [messageList, setMessageList] = useState([]); // from DB
 
 
   useEffect(() => {
 
     let id = selectedConversation?.conversationId;
-    console.log("id::::", id)
+    // console.log("id from useEffect 1 :::: ", id)
+    //console.log("id::::", id)
       if(id == undefined){
+        // console.log("if block");
         setConversationId(4);
-        console.log("conversationId in if ::: ",conversationId)
+        // console.log("conversationId in if after set value 4::: ",conversationId)
         
       }else if(id == null){
+        // console.log("else if block");
         setConversationId(4);
-        console.log("conversationId in else if::: ",conversationId)
+        // console.log("conversationId in else if::: ",conversationId)
         
       }
       else{
-        console.log("conversationId in else::: ",conversationId)
-        setConversationId(selectedConversation?.id); // 🟢🟢🟢🟢🟢
+        //console.log("else block");
+       // console.log("conversationId in else::: ",conversationId)
+        setConversationId(id); // 🟢🟢🟢🟢🟢
       }
 
     // ekhon db theke selected conversation er shob message gula pull kore niye ashte hobe ..
@@ -97,9 +140,11 @@ export default function SellerProducts() {
     const token = JSON.parse(tokenString).accessToken;
     const loggedInUserEmail = JSON.parse(tokenString).user.userEmailAddress;
 
-    const getConversationByConversationIDFromDB = async(token) =>{
+    const getConversationByConversationIDFromDB = async(token,id) =>{
       
-        const response  = await axios.get(`http://localhost:3000/seller/message/showAllMessageOfAConversation/${conversationId}`,
+      if(conversationId){
+        //console.log("before response: ", conversationId)
+        const response  = await axios.get(`http://localhost:3000/seller/message/showAllMessageOfAConversation/${id}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -107,17 +152,62 @@ export default function SellerProducts() {
         }
         );
         if(response.data){
-          console.log(loggedInUserEmail)
-          console.log("response.data from conversationBody : ", response.data);
+          // console.log(loggedInUserEmail)
+          //console.log("response.data from conversationBody : ", response.data);
           setMessageList(response.data);
         }
+      }
       
       };
 
-      getConversationByConversationIDFromDB(token);
+      getConversationByConversationIDFromDB(token, conversationId);
    
+      // setInterval(() => {
+        
+      // }, 2);
+
+      
    
-  },[conversationId])
+  },[conversationId, messageList])//messageList chilo na 🔰🔰🔰🔰🔰
+
+  const onChange = (e) =>{
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value, // ei ta xoss way to play with form data
+  }));
+  }
+
+  const handleMessageSubmit = async(e) =>{
+    e.preventDefault();
+    //console.log(receiverEmail, senderEmail)
+    // console.log(e.target[1].name,e.target[2].name )
+    // e.target[1].name = receiverEmail;
+    // e.target[2].value = senderEmail;
+    formData.senderEmail = senderEmail;
+    formData.receiverEmail = receiverEmail;
+    
+
+    console.log("formData from handleMessageSubmit: ", formData);
+
+    // ekhon data amader ke db te post korte hobe .. axios er maddhome 
+    const tokenString = localStorage.getItem('authForEcomerce');
+    const token = JSON.parse(tokenString).accessToken;
+
+
+    const response = await axios.post('http://localhost:3000/seller/message/createNewMessage', formData,
+    {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+    );
+
+    if(response.data){
+      console.log("successfully submit : ", response.data);
+      router.push(`/seller/${sellerId}/conversation`);
+    }
+
+  }
 
   return (
     <>
@@ -126,7 +216,6 @@ export default function SellerProducts() {
     <br/>
     
     {/* <p>productId :  {sellerId}</p> */}
-
 
       <div className=''>
       
@@ -146,7 +235,7 @@ export default function SellerProducts() {
                 
                 {/* // conversationList map korte hobe  */}
                 {
-                  conversationList ?? conversationList.map((conversation, index) =>(
+                  conversationList.map((conversation, index) =>(
                     <>
                       <button   onClick={() => handleConversationClick(conversation)}>
                         <Conversation key={index}  conversation={conversation}/>               
@@ -170,11 +259,12 @@ export default function SellerProducts() {
                   <div className='w-auto  overflow-hidden bg-PrimaryColorDark' style={{position:"relative", height:"300px", overflowBlock:"hidden", overflowY:"scroll"}} >
                   
                     {
-                      messageList ?? messageList.map((message, index) =>(
+                      messageList.map((message, index) =>(
                         <>
                           {
                             
                             message.senderEmail == loggedInUserEmail ? (
+                                
                                 <SingleSender  message={message.message} date={message.timeStamps}/>
                             ) :
                               message.receiverEmail == loggedInUserEmail ? (
@@ -190,12 +280,18 @@ export default function SellerProducts() {
 
                   </div>
                   <div>
-                  
-                            <form>
+                          {/* // ekhane logged in user selected conversation er moddhe message send korbe  */}
+                            <form noValidate onSubmit={handleMessageSubmit}>
                                 <div class="flex">
                                   <input type="file" id="file" style={{padding:"2px", width:"110px", height:"41px", borderRadius:"50px"}} class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
                                   
-                                  <input type="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write Text Here ..." required/>
+                                  {/* <input type="hidden" onChange={onChange} id="receiverEmail" name='receiverEmail' value={receiverEmail} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write Text Here ..." required/>
+                                  <input type="hidden" onChange={onChange} id="senderEmail" name='senderEmail' value={senderEmail} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write Text Here ..." required/>
+                                   */}
+                                  {
+                                    //console.log(senderEmail, receiverEmail)
+                                  }
+                                  <input type="text" id="message" name='message'onChange={onChange} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write Text Here ..." required/>
                                   <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                                 </div>
                             </form>

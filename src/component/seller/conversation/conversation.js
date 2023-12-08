@@ -23,7 +23,7 @@ export default function Conversation({conversation}) {
                 alt="Picture of user"
               />
               <div>
-                <h1 className='ml-3 '>{sellerName}</h1>
+                <h1 className='ml-3 '>{sellerName + "--"+id}</h1>
               </div>
               </div>
 

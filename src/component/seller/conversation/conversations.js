@@ -4,6 +4,7 @@ import axios from 'axios';
 
 export default function Conversations({loggedInUserEmail}) {
   const [conversationList, setConversationList] = useState([]); // from DB
+  const [selectedConversation, setSelectedConversation] = useState(null);
   
   useEffect(() => {
     // db theke loggedInUser er shob conversation gula pull kore niye ashte hobe .. 
@@ -26,6 +27,11 @@ export default function Conversations({loggedInUserEmail}) {
     }
     getConversationListFromDB();
   },[])
+
+  const handleConversationClick = (conversation) => {
+    setSelectedConversation(conversation);
+  };
+
   return (
     <>
     {/* conversations */}
@@ -35,18 +41,21 @@ export default function Conversations({loggedInUserEmail}) {
     {/* // conversationList map korte hobe  */}
     {
       conversationList.map((conversation, index) =>(
-        <Conversation key={index} conversation={conversation}/>
+        <Conversation key={index}  onClick={() => handleConversationClick(conversation)}  conversation={conversation}/>
       ))
     }
-    {/* <Conversation/>
+    
+    </div>
+    
+    </>
+  )
+}
+
+
+{/* <Conversation/>
     <Conversation/>
     <Conversation/>
     <Conversation/>
     <Conversation/>
     <Conversation/>
     <Conversation/> */}
-    </div>
-    
-    </>
-  )
-}

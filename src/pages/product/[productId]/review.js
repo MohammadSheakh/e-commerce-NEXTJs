@@ -1,6 +1,6 @@
 import Navbar from '@/layout/navbar';
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import LenovoPc124 from '../../../../public/images/Products/LenovoPc124.jpg';
 
@@ -15,11 +15,51 @@ import Banner from '@/component/home/Banner';
 import SellerProfile from '@/component/seller/profile/SellerProfile';
 import ReviewCard from '@/component/common/review/reviewCard';
 import ProductProfileInfo from '@/component/common/productDetails/productDetailsProfile/ProductProfileInfo';
+import axios from 'axios';
 
 
 export default function SellerProducts() {
   const router = useRouter();
   const {sellerId} = router.query;
+
+  const [generalReviews, setGeneralReviews] = useState(null);
+ const [afterSalesReviews, setAfterSalesReviews] = useState(null);
+  
+  useEffect(() => {
+    // ei seller er under e joto review ase .. DB theke pull kore niye ashte hobe
+    
+    const tokenString = localStorage.getItem('authForEcomerce'); 
+
+    const getAllGeneralReviewForSeller = async(token) =>{
+      const response = await axios.get(`http://localhost:3000/seller/getAllGeneralReviewForProduct/14`,{
+        headers:{
+          Authorization: `bearer ${token}`
+        }
+      });
+      if(response.data){
+        setGeneralReviews(response.data);
+       // console.log(response.data)
+      }
+    }
+
+    const getAllAfterSalesReviewForSeller = async(token) =>{
+      const response = await axios.get(`http://localhost:3000/seller/getAllAfterSalesReviewForProduct/14`,{
+        headers:{
+          Authorization: `bearer ${token}`
+        }
+      });
+      if(response.data){
+        setAfterSalesReviews(response.data);
+        //console.log(response.data)
+      }
+    }
+
+    getAllAfterSalesReviewForSeller(JSON.parse(tokenString).accessToken);
+    getAllGeneralReviewForSeller(JSON.parse(tokenString).accessToken);
+
+    
+  },[])
+
   return (
     <>
     <br/>

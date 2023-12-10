@@ -7,7 +7,7 @@ import { BiDislike, BiSolidDislike  } from "react-icons/bi";
 
 
 
-export default function ReviewCard() {
+export default function ReviewCard({review}) {
   return (
     <>
       <div id='reviewBody' style={{marginBottom:"10px"}} className='relative rounded-lg p-4 w-auto h-auto bg-PrimaryColorDarkHover border-2'>
@@ -25,17 +25,18 @@ export default function ReviewCard() {
                   />
                   <div>
                     
-                     <h1 className='ml-3'>Mohammad Bin Ab. Jalil Sheakh</h1>
-                  
+                     {/* <h1 className='ml-3'>Mohammad Bin Ab. Jalil Sheakh</h1> */}
+                     <h1 className='ml-3'>{review?.sellerId?.sellerName}</h1>
                       
                   </div>
                   </div>
 
                   <div style={{marginLeft:"60px"}} className='rounded-md relative left-[35px] top-[-15px] ml-9 w-96 h-auto bg-PrimaryColorDark'>
-                          Review Body...........................................
+                          {/* Review Body...........................................
                           .....................................................
                           .....................................................
-                          .....................................................
+                          ..................................................... */}
+                          {review?.reviewDetails}
                   </div>
                   <div className='flex gap-3 mt-2'>
                     {/* like dislike buttons  */}

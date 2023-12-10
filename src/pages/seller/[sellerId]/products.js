@@ -107,7 +107,7 @@ export default function SellerProducts() {
     const getProductsDataFromBackEnd = async(token) =>{
 
       const id = JSON.parse(tokenString).userId;
-      const response = await axios.get(`http://localhost:3000/seller/getAllProductsDetailsById/${id}`,
+      const response = await axios.get(`http://localhost:3000/seller/getAllProductsDetailsBySellerId/${id}`,
       {
         headers: {
            Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ export default function SellerProducts() {
     }
     
     getProductsDataFromBackEnd(JSON.parse(tokenString).accessToken);
-  },[products])
+  },[]) //products
 
   const onChange = (e) => {
     // onChange e validation korte hobe .. 

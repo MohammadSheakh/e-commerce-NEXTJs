@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Image from 'next/image'
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
@@ -50,10 +51,13 @@ export default function ProductCard({product,sellerID}) {
         <div className="card-body">
             <h5 className="card-title flex justify-between" style={{width:"auto",height:"40px", fontSize:"18px"}} >
               {/* , display:"flex", justifyContent : "space-between" */}
-              <a   target="_blank" href={`/product/${id}`}>
-                {/* style={{textAlign: "left" }}  */}
+              <Link href={`/product/[productId]`} as={`/product/${id}`} >
+              {name}
+              </Link>
+              {/* <a   target="_blank" href={`/product/${id}`}>
+                
                 {name}
-              </a>
+              </a> */}
               {/* // ekhane amra dropdown button ta add korte pari */}
                 {/* //////////////////////// */}
                 <div className="dropdown">

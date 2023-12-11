@@ -9,53 +9,66 @@ import ProductProfileInfo from '@/component/common/productDetails/productDetails
 import Specifications from '@/component/common/specification/Specifications';
 import axios from 'axios';
 
-export default function Profile(param) {
+export default function Profile() {
   const router = useRouter();
-  //const {productId} = router.query;
+  const {productId} = router.query;
 
-  const {productId} = param;
-
-  // const {productId} = router.params();
   const [productDetails, setProductDetails] = useState(null); //{}
   const [productID, setProductID] = useState(null);
 
-  // console.log("🟢🟢", productId);
+   console.log("🟢1🟢", typeof productId);
   //console.log(productDetails.name);
   useEffect(()=>{
-    console.log("🟢🟢", productId)
+    //console.log("🟢2🟢",typeof productId)
     setProductID(productId);
   },[])// productId
+    
+  
     
 useEffect(() => {
     
 
     //const {id, name, details, productImage, rating, price, availableQuantity, lowestQuantityToStock, createdAt} = productDetails ;
+    
   
+    
+
+    // if(typeof productId == "string"){
+    //   getProductDetailsFromDB(token, productId);
+    // }
+    // else {
+    //   const {productId} = router.query;
+    //   getProductDetailsFromDB(token, productId);
+    // }
+
+    getProductDetailsFromDB();
+    
+    
+  }, []) //productId
+
+
+  async function getProductDetailsFromDB(){
+
     const tokenString = localStorage.getItem('authForEcomerce');
     const token = JSON.parse(tokenString).accessToken;
 
-    const getProductDetailsFromDB = async(token,productId)=>{
-      console.log("product id from getProductDetailsFromDB 2: ",productId, token);
-      
-      console.log("product id from getProductDetailsFromDB1 : ",productID);
-      // const response  = await axios.get(`http://localhost:3000/seller/getAProductsDetailsById/${productId}`,
-      // {
-      //   headers: {
-      //      Authorization: `Bearer ${token}`,
-      //   },
-      // }
-      // );
-      // if(response.data){
-      //   // state er moddhe set korbo 
-      //   console.log("🏠🏠",response.data);
-      //   setProductDetails(response.data);
-      // }
+    const response  = await axios.get(`http://localhost:3000/seller/getAProductsDetailsById/${productId}`,
+    {
+      headers: {
+         Authorization: `Bearer ${token}`,
+      },
     }
+    );
+    if(response.data){
+      // state er moddhe set korbo 
+      console.log("🏠🏠",response.data);
+      setProductDetails(response.data);
+    }
+  }
 
-    getProductDetailsFromDB(token, productId);
+  
 
-    
-  }, [productID]) //productId
+
   return (
     <>
     <br/>
@@ -85,13 +98,13 @@ useEffect(() => {
   )
 }
 
-export async function getServerSideProps(params) {
- // const {productId} = params.query;
- console.log("params 🏠🏠🏠: ", params)
-  //console.log("🟢from getServerSideProps🟢 ", productId);
-  return {
-    props: {
-      //productId, // props: {productId},
-    },
-  }
-}
+// export async function getServerSideProps(params) {
+//  // const {productId} = params.query;
+//  console.log("params 🏠🏠🏠: ", params)
+//   //console.log("🟢from getServerSideProps🟢 ", productId);
+//   return {
+//     props: {
+//       //productId, // props: {productId},
+//     },
+//   }
+// }

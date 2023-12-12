@@ -17,40 +17,26 @@ export default function Profile() {
   const [productID, setProductID] = useState(null);
 
    console.log("🟢1🟢", typeof productId);
-  //console.log(productDetails.name);
+  
   useEffect(()=>{
-    //console.log("🟢2🟢",typeof productId)
+    const {productId} = router.query;
     setProductID(productId);
-  },[])// productId
+  },[])
     
   
     
 useEffect(() => {
     
-
-    //const {id, name, details, productImage, rating, price, availableQuantity, lowestQuantityToStock, createdAt} = productDetails ;
-    
-  
-    
-
-    // if(typeof productId == "string"){
-    //   getProductDetailsFromDB(token, productId);
-    // }
-    // else {
-    //   const {productId} = router.query;
-    //   getProductDetailsFromDB(token, productId);
-    // }
-
     getProductDetailsFromDB();
-    
-    
-  }, []) //productId
+  }, [])
 
 
   async function getProductDetailsFromDB(){
 
     const tokenString = localStorage.getItem('authForEcomerce');
     const token = JSON.parse(tokenString).accessToken;
+    const {productId} = router.query;
+    console.log(" type of ::::", typeof productId)
 
     const response  = await axios.get(`http://localhost:3000/seller/getAProductsDetailsById/${productId}`,
     {

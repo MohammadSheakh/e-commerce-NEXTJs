@@ -54,23 +54,23 @@ export default function SellerProfileDetails() {
       console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString) );
       
 
-      const getSellerDataFromBackEnd = async(token) =>{
-        const response = await axios.get('http://localhost:3000/seller/14',
-        {
-          headers: {
-            // 'Content-Type': 'application/json',
-            // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk
-            Authorization: `Bearer ${token}`,
-          },
-        }
-        );
-        if(response){
-          //console.log("data🔰 : ", response.data)
-          setSellerData(response.data);
-          setFormData(sellerData);
-          // return response.data;
-        }
-      }
+      // const getSellerDataFromBackEnd = async(token) =>{
+      //   const response = await axios.get('http://localhost:3000/seller/14',
+      //   {
+      //     headers: {
+      //       // 'Content-Type': 'application/json',
+      //       // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   }
+      //   );
+      //   if(response){
+      //     //console.log("data🔰 : ", response.data)
+      //     setSellerData(response.data);
+      //     setFormData(sellerData);
+      //     // return response.data;
+      //   }
+      // }
 
       
 
@@ -87,6 +87,25 @@ export default function SellerProfileDetails() {
     }
      
   },[sellerId])
+
+
+  const getSellerDataFromBackEnd = async(token) =>{
+    const response = await axios.get(`http://localhost:3000/seller/${sellerId}`,
+    {
+      headers: {
+        // 'Content-Type': 'application/json',
+        // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    );
+    if(response){
+      //console.log("data🔰 : ", response.data)
+      setSellerData(response.data);
+      setFormData(sellerData);
+      // return response.data;
+    }
+  }
 
   const onChange = (e) => {
     console.log("🔴 onChange e.target.name : ", e.target.name, e.target.value)

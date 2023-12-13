@@ -39,7 +39,7 @@ const [searchForm, setSearchForm] = useState({
 
   useEffect(() => {
     //console.log(router);
-    console.log(sellerId);
+    // console.log(sellerId);
     try{
       // http://localhost:3000/seller/14
       

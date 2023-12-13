@@ -51,7 +51,7 @@ export default function SellerProfileDetails() {
 
       const tokenString = localStorage.getItem('authForEcomerce');    
       //console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString).accessToken );
-      console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString) );
+      //console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString) );
       
 
       // const getSellerDataFromBackEnd = async(token) =>{
@@ -76,7 +76,7 @@ export default function SellerProfileDetails() {
 
       getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
 
-      console.log("seller profile 🟢useEffect-> sellerData from database .. formData from front-End🟢", sellerData,"==🔰==", formData)
+      // console.log("seller profile 🟢useEffect-> sellerData from database .. formData from front-End🟢", sellerData,"==🔰==", formData)
           
       
 
@@ -108,7 +108,7 @@ export default function SellerProfileDetails() {
   }
 
   const onChange = (e) => {
-    console.log("🔴 onChange e.target.name : ", e.target.name, e.target.value)
+   // console.log("🔴 onChange e.target.name : ", e.target.name, e.target.value)
     //setSellerData    setFormData
     setSellerData((prevState) => ({
         ...prevState,

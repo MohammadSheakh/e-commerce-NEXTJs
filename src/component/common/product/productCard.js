@@ -56,7 +56,7 @@ export default function ProductCard({product,sellerID}) {
         <div className="card-body">
             <h5 className="card-title flex justify-between" style={{width:"auto",height:"40px", fontSize:"18px"}} >
               {/* , display:"flex", justifyContent : "space-between" */}
-              <Link href={`/product/[productId]`} as={`/product/${id}`} >
+              <Link className='ml-3' href={`/product/[productId]`} as={`/product/${id}`} >
               {name}
               </Link>
               {/* <a   target="_blank" href={`/product/${id}`}>
@@ -113,10 +113,10 @@ export default function ProductCard({product,sellerID}) {
                          &nbsp;
                          &nbsp;
                      </div>
-                     <div className='flex gap-3'>
+                     <div className='flex '>
                         {/* // if product has any status .. show here ..  */}
                         <div className="bg-orange-500" > Trending </div>
-                        <div>Limited Stock</div>
+                        <div className='ml-2'>Limited Stock</div>
                      </div>
                  
          </div>

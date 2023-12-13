@@ -137,8 +137,6 @@ const [searchForm, setSearchForm] = useState({
     
     const id = JSON.parse(tokenString).userId;
      const response = await axios.get(`http://localhost:3000/seller/getProductsBySearch?searchValue=${searchValue}`,
-    //const response = await axios.get(`http://localhost:3000/seller/getProductsBySearch/${searchValue}`,
-    //const response = await axios.get(`http://localhost:3000/seller/getProductsBySearch/${searchValue}`,
     
     {
       headers: {

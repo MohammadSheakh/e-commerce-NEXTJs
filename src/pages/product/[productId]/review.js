@@ -54,8 +54,8 @@ export default function SellerProducts() {
       }
     }
 
-    getAllAfterSalesReviewForSeller(JSON.parse(tokenString).accessToken);
-    getAllGeneralReviewForSeller(JSON.parse(tokenString).accessToken);
+    //getAllAfterSalesReviewForSeller(JSON.parse(tokenString).accessToken);
+    //getAllGeneralReviewForSeller(JSON.parse(tokenString).accessToken);
 
     
   },[])
@@ -92,7 +92,6 @@ export default function SellerProducts() {
               {/* ///////////////////////////////////////////////// */}
               
               <ReviewCard/>
-              
               
               <ReviewCard/>
               <ReviewCard/>

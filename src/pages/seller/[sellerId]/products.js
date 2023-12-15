@@ -26,7 +26,6 @@ export default function SellerProducts() {
   const [productForm, setProductForm] = useState({
     name : "",
     details: "",
-    //productImage: "",
     price: "",
     category: "",
     availableQuantity: "",
@@ -79,9 +78,7 @@ const [searchForm, setSearchForm] = useState({
       if(response){
         //console.log("reponse from selectedCategory : ", response?.data)
         setCategory(response?.data);
-        //const selectedCategoryId = response?.data?.map((category)=>{return category.categoryId.CategoryID});
-        // console.log("selectedCategoryId : ",selectedCategoryId);
-        // setSelectedCategoryId(selectedCategoryId);
+        
       }
       }
       
@@ -205,7 +202,7 @@ const onChangeForSearchForm = (e) => {
     const token = JSON.parse(tokenString).accessToken;
       
 
-    e.preventDefault();
+    //e.preventDefault();
     console.log("product form ::: : ",productForm);
     ////////////////////////////////////////////////////////////////////const id = JSON.parse(tokenString).userId;
     const response = axios.post(`http://localhost:3000/seller/createProduct`,productForm,{

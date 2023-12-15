@@ -15,7 +15,7 @@ import { useRouter } from 'next/router';
 export default function ReviewCard({review}) {
   const router = useRouter();
   useEffect(()=>{
-
+     console.log("review 🟢🟢🟢", review)
   },[])
   const handleDelete = async(reviewId) => {
     // console.log("delete clicked");
@@ -29,6 +29,10 @@ export default function ReviewCard({review}) {
       
      router.push("/seller/14/review"); 
     }
+    
+  }
+
+  const handleReplySubmit = () =>{
     
   }
   return (
@@ -54,14 +58,29 @@ export default function ReviewCard({review}) {
                   </div>
                   </div>
 
-                  <div style={{marginLeft:"60px"}} className='rounded-md relative left-[35px] top-[-15px] ml-9 w-96 h-auto bg-PrimaryColorDark'>
+                  <div style={{marginLeft:"70px"}} className='rounded-md relative left-[35px] top-[-15px] ml-9 w-96 h-auto bg-PrimaryColorDark'>
                           {/* Review Body...........................................
                           .....................................................
                           .....................................................
                           ..................................................... */}
                           {review?.reviewDetails}
                   </div>
-                  <div className='flex gap-3 mt-2'>
+                  {/* ////////////////////////////// Review Reply gula ekhane thakbe - START ///////////////////////////////////////////// */}
+
+                  {
+                    review.replies?.map((reply) => {
+                      const {replyId, replyDetails, createdAt} = reply;
+                      return(
+                      <>
+                      {replyId} : {replyDetails}  : {createdAt} 
+                      </>
+                    )
+                    }
+                    )
+                  }
+
+                  {/* ///////////////////////////////Review Reply gula ekhane thakbe - END ////////////// */}
+                  <div style={{marginTop:"20px"}} className='flex gap-3 mt-2'>
                     {/* like dislike buttons  */}
                     <button className='btn'>
                     <BiLike />
@@ -76,7 +95,7 @@ export default function ReviewCard({review}) {
                     {/* // ekhane reply er input form thakbe ..  */}
                     {/* /////////////////flowbite/////////////////////// */}
                     
-                    <form className='flex  gap-3'>
+                    <form className='flex  gap-3' onSubmit={handleReplySubmit}>
                       
                         <input  type="text" id="reviewReply" class="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Give Reply..." required/>
                       

@@ -17,7 +17,7 @@ module.exports = {
     },
     colors: {
       PrimaryColorDark: "#01263f",
-      PrimaryColorDarkHover: "#01383f",
+      PrimaryColorDarkHover: "#1d1e1f",//ffff  01383f // ei color ta use korsi amra
       PrimaryColorLight: "#F1F5F9", // bg-slate-100
       navbarColorGray: "#64748B", // bg-slate-600
       homeColor: "#cbd5e1", // bg-slate-300

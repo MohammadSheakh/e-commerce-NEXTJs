@@ -17,7 +17,7 @@ export default function Profile() {
   const [productDetails, setProductDetails] = useState(null); //{}
   const [productID, setProductID] = useState(null);
 
-  const [specificationForm, setSpecificationForm ] = useState([
+  const [specification, setSpecification ] = useState([
       {
         specificationCategoryId : 1,
         specificationCategoryName : "Overview",
@@ -48,6 +48,24 @@ export default function Profile() {
       
     ]
   )
+
+  const [specificationForm, setSpecificationForm ] = useState([
+    {
+      specificationCategoryId : 1,
+      specificationCategoryName : "Overview",
+      specificationCategory: [
+        {
+          id: 1,
+          title : "device name",
+          details: "Apple Pro Max",
+        },
+        
+      ]
+    },
+    
+    
+  ]
+)
 
    // console.log("🟢1🟢", typeof productId);
   
@@ -98,7 +116,61 @@ useEffect(() => {
     console.log("SpecificationForm from handle submit 🔰 ", specificationForm)
   } 
 
+  const handleAddNewTitleAndDetails = (e, categoryId) => {
+    e.preventDefault();
+    const newSpecificationForm = [...specificationForm];
+    const categoryIndex = newSpecificationForm.findIndex(
+      (category) => category.specificationCategoryId === categoryId
+    );
+
+    if (categoryIndex !== -1) {
+      const newTitleAndDetails = {
+        id: newSpecificationForm[categoryIndex].specificationCategory.length + 1,
+        title: 'New Title',
+        details: 'New Details',
+      };
+
+      newSpecificationForm[categoryIndex].specificationCategory.push(
+        newTitleAndDetails
+      );
+      setSpecificationForm(newSpecificationForm);
+    }
+  };
+
+  const handleAddNewSpecificationCategory = (e) => {
+    e.preventDefault();
+    const newSpecificationForm = [...specificationForm];
+    const newCategory = {
+      specificationCategoryId: specificationForm.length + 1,
+      specificationCategoryName: 'New Category',
+      specificationCategory: [],
+    };
+
+    newSpecificationForm.push(newCategory);
+    setSpecificationForm(newSpecificationForm);
+  };
   
+
+  
+  const handleRemoveLastSpecificationCategory = (e) => {
+    e.preventDefault();
+    const newSpecificationForm = [...specificationForm];
+    newSpecificationForm.pop();
+    setSpecificationForm(newSpecificationForm);
+  };
+
+  const handleRemoveLastTitleAndDetails = (e, categoryId) => {
+    e.preventDefault();
+    const newSpecificationForm = [...specificationForm];
+    const categoryIndex = newSpecificationForm.findIndex(
+      (category) => category.specificationCategoryId === categoryId
+    );
+
+    if (categoryIndex !== -1) {
+      newSpecificationForm[categoryIndex].specificationCategory.pop();
+      setSpecificationForm(newSpecificationForm);
+    }
+  };
 
 
   return (
@@ -124,7 +196,7 @@ useEffect(() => {
         {/* // Add Specification Button .... its a modal actually -------------------------------------------------------------------------- Start */}
         {/* <button className='btn'>Add Specification</button> */}
 
-        <button className="btn m-3" onClick={()=>document.getElementById('my_modal_1').showModal()}>Add Product</button>
+        <button className="btn m-3" onClick={()=>document.getElementById('my_modal_1').showModal()}>Add Specification Category</button>
               <dialog id="my_modal_1" className="modal">
                 <div className="modal-box">
                   <div className="modal-action">
@@ -138,80 +210,71 @@ useEffect(() => {
                   <form className="modal-action flex flex-col"  noValidate method="dialog" onSubmit={handleSubmitNewSpecification}>
                     {/* <h1 className="text-xl font-normal text-gray-900 dark:text-white">Add New Specification Category</h1> */}
 
-                    
+
+            {
+
+                <div>
+                {specificationForm.map((category) => (
+                  <div key={category.specificationCategoryId}>
+                    {/* ............................................................ */}
+
                     <div class="mb-6">
-                    {/* specificationCategoryName */}
-                      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Specification Category Name</label>
-                      <input onChange={onChange} type="name" id="specificationCategoryName" name='specificationCategoryName' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product name here..." />
+                      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Specification Category Name - specificationCategoryId {category.specificationCategoryId}</label>
+                      <input onChange={onChange} value={category.specificationCategoryName} type="name" id="specificationCategoryName" name='specificationCategoryName' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write specification category name here..." />
                     </div>
 
-                    {/* specificationCategoryTitle */}
-                    <div class="mb-6">
-                      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
-                      <input onChange={onChange} type="name" id="title" name='title' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product details here..." />
-                    </div> 
-                    
-                    {/* specificationCategoryDetails */}
+                    {/* ............................................................... */}
+                    {/* <h2>{category.specificationCategoryName}</h2> */}
+                    <ul>
+                      {category.specificationCategory.map((spec, innerIndex) => (
+                        <>
+                        {/* <li key={spec.id}>
+                          {spec.title} - {spec.details}
+                        </li> */}
+                        
 
-                    <div class="mb-6">
-                      <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Details</label>
-                      <input  onChange={onChange} type="name" id="details" name='details' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product details here..."  />
-                    </div> 
+                        {/* key={innerIndex} */}
+                        <div style={{marginLeft:"70px"}}  key={spec.id}>
+                                <div class="mb-6">
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+                                <input onChange={onChange} value={`${spec.title} - ${spec.id} - ${innerIndex}`} type="name"  name='title' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product title here..." />
+                              </div> 
+                              
+                              
+                              <div class="mb-6">
+                                <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Details</label>
+                                <input  onChange={onChange} value={`${spec.details} - ${spec.id} - ${innerIndex}`} type="name"  name='details' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product details here..."  />
+                              </div> 
+                          </div>
+                        
+                        </>
+                        
 
-                    {/* ------------------------------------------- new Specification category name add START---------------------- */}
-                    <div class="flex gap-x-3 ml-40">
-                                        <button
-                                            onClick={(e, index) => {
-                                                e.preventDefault();
-                                                formData.members.splice(
-                                                    index,
-                                                    1
-                                                );
-                                                setFormData({
-                                                    members: [...members],
-                                                });
-                                            }}
-                                            class=" bg-PrimaryColorDark p-1 my-2 rounded-md"
-                                            // ml-72
-                                        >
-                                            Remove Member
-                                        </button>
-                                        <button
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                              //   setSpecificationForm((prevState) => ({
-                                              //     ...prevState,
-                                              //    {
-                                              //         specificationCategoryId : 1,
-                                              //         specificationCategoryName : "",
-                                              //         specificaitonCategory:{
-                                              //             memberName: "",
-                                              //             memberImage: "",
-                                              //             memberLink: "",
-                                              //         },
-                                              //   }
-                                              // ))}
-                                              // ;
-                                              setSpecificationForm((prevState) => ({
-                                                ...prevState,
-                                                  specificationCategoryId: 2,
-                                                  specificationCategoryName:"",
-                                                  specificationCategory: {
-                                                    id: 1,
-                                                    title : "",
-                                                    details: "",
-                                                  },
-                                                
-                                              }))
-                                            }}
-                                            class=" bg-PrimaryColorDark p-1 my-2 rounded-md"
-                                            // ml-72
-                                        >
-                                            Add New Member
-                                        </button>
-                                    </div>
-                    {/* ------------------------------------------- new Specification category name add END--------------------------------------- */}
-
+                      ))}
+                    </ul>
+                    <button
+                      onClick={(e) =>
+                        handleAddNewTitleAndDetails(e,category.specificationCategoryId)
+                      }
+                    >
+                      Add New Title And Details
+                    </button>
+                    <button
+                      onClick={(e) => handleRemoveLastTitleAndDetails(e, category.specificationCategoryId)}
+                    >
+                      Remove Last Title And Details
+                    </button>
+                  </div>
+                ))}
+                <button onClick={handleAddNewSpecificationCategory}>
+                  Add New Specification Category
+                </button>
+                <button onClick={handleRemoveLastSpecificationCategory}>
+                  Remove Last Specification Category
+                </button>
+                </div>
+                
+            }
 
                     <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                   </form>
@@ -235,9 +298,9 @@ useEffect(() => {
             {/* // ekhane loop chalaite hobe specificationCategories er upor  */}
 
             {
-              specificationForm?.map((specificaitonCategory) => (
+              specification?.map((specificaitonCategory, index) => (
                 <>
-                  <SpecificationCategory specificaitonCategory={specificaitonCategory}/>
+                  <SpecificationCategory key={index} specificaitonCategory={specificaitonCategory}/>
                 </>
               ))
             }

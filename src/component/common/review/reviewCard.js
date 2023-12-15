@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import LenovoPc124 from '../../../../public/images/Products/LenovoPc124.jpg';
 import { BiLike, BiSolidLike  } from "react-icons/bi";
 import { BiDislike, BiSolidDislike  } from "react-icons/bi";
@@ -14,6 +14,18 @@ import { useRouter } from 'next/router';
 
 export default function ReviewCard({review}) {
   const router = useRouter();
+  const [showAllReplies, setShowAllReplies] = useState(false);
+
+  const [reviewReplyForm, setReviewReplyForm] = useState({
+    replyDetails: "",
+    reviewId: review.reviewId,
+    sellerId: "", // sellerId from local storage
+
+  });
+
+  const toggleRepliesVisibility = () => {
+    setShowAllReplies(!showAllReplies);
+  };
   useEffect(()=>{
      console.log("review 🟢🟢🟢", review)
   },[])
@@ -32,8 +44,33 @@ export default function ReviewCard({review}) {
     
   }
 
-  const handleReplySubmit = () =>{
+  
+  const onChange = (e) => {
+    // onChange e validation korte hobe .. 
+    console.log(e.target.name, " : ", e.target.value)
+    setReviewReplyForm((prevState) => ({
+        ...prevState,
+        [e.target.name]: e.target.value, // ei ta xoss way to play with form data
+    }));
+  };
+
+  const handleReplySubmit = (e) =>{
+    const token = JSON.parse(localStorage.getItem('authForEcomerce')).userId;
+    const token2 = JSON.parse(localStorage.getItem('authForEcomerce')).accessToken;
     
+    e.preventDefault();
+    reviewReplyForm.sellerId = token;
+    console.log("handle reply submit : ", reviewReplyForm);
+
+    const response = axios.post("http://localhost:3000/seller/addReplyToAReview", reviewReplyForm,{
+      headers:{
+        Authorization: `bearer ${token2}`
+      }
+   
+    })
+    if(response.data){
+      router.push("/seller/14/review"); 
+    }
   }
   return (
     <>
@@ -67,7 +104,9 @@ export default function ReviewCard({review}) {
                   </div>
                   {/* ////////////////////////////// Review Reply gula ekhane thakbe - START ///////////////////////////////////////////// */}
 
-                  {
+                  {/* {
+
+
                     review.replies?.map((reply) => {
                       const {replyId, replyDetails, createdAt} = reply;
                       return(
@@ -77,7 +116,26 @@ export default function ReviewCard({review}) {
                     )
                     }
                     )
-                  }
+                  } */}
+
+                  <div className="max-w-md mx-auto p-4 border">
+                        {review.replies.slice(0, showAllReplies ? review.replies.length : 1).map((reply, index) => (
+                          <div key={index} className="reply">
+                            <p>{reply.replyDetails}</p>
+                          </div>
+                        ))}
+                        {review.replies.length > 1 && (
+                          <div className='flex justify-end'>
+                                <button
+                            onClick={toggleRepliesVisibility}
+                            className="mt-2 text-blue-500 cursor-pointer"
+                          >
+                            {showAllReplies ? 'See Less' : 'See More'}
+                          </button>
+                          </div>
+                          
+                        )}
+                      </div>
 
                   {/* ///////////////////////////////Review Reply gula ekhane thakbe - END ////////////// */}
                   <div style={{marginTop:"20px"}} className='flex gap-3 mt-2'>
@@ -97,7 +155,7 @@ export default function ReviewCard({review}) {
                     
                     <form className='flex  gap-3' onSubmit={handleReplySubmit}>
                       
-                        <input  type="text" id="reviewReply" class="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Give Reply..." required/>
+                        <input  type="text" onChange={onChange} id="replyDetails" name='replyDetails' class="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Give Reply..." required/>
                       
                       
                       <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>

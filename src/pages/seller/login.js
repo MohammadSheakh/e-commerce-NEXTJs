@@ -8,6 +8,8 @@ import axios from "axios";
 
 // Link ta o niye ashte hobe .. // ekta Error page design korte hobe .. shetao niye ashte hobe ..
 function Login() {
+
+    const { login, getUser, checkUser } = useAuth();
     
     const router = useRouter();
     // component load hoile jeno user field e focus kore .. shejonno amra useRef use korte pari ..
@@ -15,7 +17,7 @@ function Login() {
         email: "",
         password: "",
     });
-    const { login } = useAuth();
+    
     
     const [error, setError] = useState("");
 
@@ -65,7 +67,7 @@ function Login() {
 
     // Dave Gray eta ke asynchronous function boltese ... ⏳ 28:08
     const  handleSubmit = async (e) => {
-        console.log(formData);
+        console.log("formData after handleSubmit: ", formData);
         e.preventDefault();
         if (!e.target[0].value && !e.target[1].value) {
             console.log(e.target[0].value  + " " + e.target[1].value)
@@ -140,7 +142,7 @@ function Login() {
                 // cookie thakle profile page e redirect kore dibo ... 
 
                 
-                login(user);
+                login(user); //🔰 localStorage er data useState e set kore dilam 
                 
                 router.push(user.userId);
                 // '/seller/'+

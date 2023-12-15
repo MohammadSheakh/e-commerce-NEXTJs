@@ -14,44 +14,54 @@ import { loadGetInitialProps } from 'next/dist/shared/lib/utils';
 
 export default function Navbar() {
 const { getUser, checkUser } = useAuth();
+// const user2 = useAuth();
   const [theme, setTheme] = useState(null);
- const [user, setUser] = useState(null);
- const [user1, setUser1] = useState(null);
- const [data, setData] = useState(null);
+ // const [user, setUser] = useState(null);
+ const [user1, setUser1] = useState(null);  // user1 is the user from localstorage from this page
+ const [data, setData] = useState(null); 
   const router = useRouter();
-  // const [data, setData] = useState(''); // jsonData .. default is maybe null ?
-  // const [user, setUser] = useState(''); 
-  
+
+  //const {user} = user2;
+
 
     useEffect(() => {
-        const tokenString = localStorage.getItem('authForEcomerce');
-        setUser1(JSON.parse(tokenString));
-        // const u = JSON.parse(user);
-        
-        
-        //const token = JSON.stringify(tokenString);
-        //setUser(token);
-        // if(token){
-        //     getUsersInfo();
-        // }
+        //console.log("authcontext's user from navbar.js🔰🔰🔰🔰", user);
+        //const tokenString = localStorage.getItem('authForEcomerce');
+        //setUser1(JSON.parse(tokenString));  
+
+
+        // ekhon amra context er chekUser function ta call korbo .. jeta return korbe 
+        // localstorage e accesstoken set kora ase kina ..
+        // thakle true return korbe ..  
+
+        // jodi true return kore .. taile context er user er value ekhane e use korbo 
+        const details = checkUser();
+        if(details){
+            // true return korle .. 
+            // user ke user1 er moddhe assign kore dibo .. user kintu ashbe context theke
+            setUser1(details);
+        }
     },[])
 
-  async function getUsersInfo(){
-    try{
-        console.log("user1?.userId : ", user1?.userId)
-      const response = await api.get(14);
-      //console.log("response: ", response);
-      setData(response.data);
-    //   console.log("=====getUsersInfo====",response.data);
-      
-    }catch(error){
-      console.log("error:", error);
-    }
-  }
+    useEffect(() => {
+        console.log("user1 from getUsersInfo navbar.js 🔰🔰 ",user1)
+    },[])
+
+//   async function getUsersInfo(){
+//     console.log("user1 from getUsersInfo navbar.js 🔰🔰 ",user1)
+//     try{
+//         console.log("user1?.userId : ", user1?.userId)
+//       const response = await api.get(14);
+//       setData(response.data);
+    
+//     }catch(error){
+//       console.log("error:", error);
+//     }
+//   }
 
 //const user1 = null;
   const logout = () => {
-    setUser(null);
+//    setUser(null);
     setUser1(null);
     //dispatch(userLoggedOut()); // AuthSlice er userLoggedOut Action ta dispatch kore dilam ..
     localStorage.clear(); // localStorage tao clear kore dite hobe ..

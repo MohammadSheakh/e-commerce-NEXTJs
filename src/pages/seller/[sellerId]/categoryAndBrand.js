@@ -21,15 +21,42 @@ export default function SellerProducts() {
   const [selectCategories, setSelecteCategories] = useState([]);  // post to DB
   const [selectedCategoriesFromDB, setSelectedCategoriesFromDB] = useState(null); // from DB 
   const [selectedCategoriesId, setSelectedCategoryId] = useState(null);
-
+  const [onlyNonSelectedCategory, setOnlyNonSelectedCategory] = useState(null); 
   useEffect(()=>{
     // ekhane amra category and brand gula DB theke niye ashbo 
     // shegula seller .. tar nijer jonno add korte parbe 
 
     try{
       const tokenString = localStorage.getItem('authForEcomerce');    
-      console.log("🔗 tokenString  🟢 : ", JSON.parse(tokenString).userId );
+      
+      ///////////////////////////////////////////////
+      // Database theke seller er jonno selected category gula load korte hobe .. product_category_seller table theke
+      // setSelectCategoriesFromDB()
+      const getAllSelectedCategoryFromBackEnd = async(token) =>{
+        const id = JSON.parse(tokenString).userId;
+        const response  = await axios.get( `http://localhost:3000/seller/getAllSelectedCategoryForSeller/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if(response){
+        console.log("reponse from selectedCategory : ", response?.data)
+        console.log("reponse from onlyNonSelectedCategory : ", onlyNonSelectedCategory)
         
+        setSelectedCategoriesFromDB(response?.data);
+
+        
+
+        const selectedCategoryId = response?.data?.map((category)=>{return category.categoryId.CategoryID});
+        //console.log("selectedCategoryId : ",selectedCategoryId);
+        setSelectedCategoryId(selectedCategoryId);
+      }
+      }
+      
+      // 🔰 getAllSelectedCategoryFromBackEnd(JSON.parse(tokenString).accessToken);
+
+      /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       const getAllCategoryDataFromBackEnd = async(token) =>{
         
@@ -43,10 +70,18 @@ export default function SellerProducts() {
         if(response){
           //console.log("reponse from category : ", response?.data)
           setCategory(response?.data);
+          console.log("reponse from category : ", category)
+
+
+          // jehetu selected category gulao amader kase ase .. so, amra selected category gula category theke remove kore dibo 
+
+
+          const nonSelectedCategory = category?.filter((category)=>{return !selectedCategoriesId.includes(category.CategoryID)});
+          setOnlyNonSelectedCategory(nonSelectedCategory);
         }
       }
 
-      getAllCategoryDataFromBackEnd(JSON.parse(tokenString).accessToken);
+      //🔰 getAllCategoryDataFromBackEnd(JSON.parse(tokenString).accessToken);
   
 
       const getAllBrandDataFromBackEnd = async(token) =>{
@@ -64,41 +99,17 @@ export default function SellerProducts() {
       }
       }
 
+  
+      getAllSelectedCategoryFromBackEnd(JSON.parse(tokenString).accessToken);
+      getAllCategoryDataFromBackEnd(JSON.parse(tokenString).accessToken);
+
       getAllBrandDataFromBackEnd(JSON.parse(tokenString).accessToken);
       
       //////////////////////////////////////////////////
-      ///////////////////////////////////////////////
-      // Database theke seller er jonno selected category gula load korte hobe .. product_category_seller table theke
-      // setSelectCategoriesFromDB()
-      const getAllSelectedCategoryFromBackEnd = async(token) =>{
-        const id = JSON.parse(tokenString).userId;
-        const response  = await axios.get( `http://localhost:3000/seller/getAllSelectedCategoryForSeller/${id}`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if(response){
-        console.log("reponse from selectedCategory : ", response?.data)
-        setSelectedCategoriesFromDB(response?.data);
-        const selectedCategoryId = response?.data?.map((category)=>{return category.categoryId.CategoryID});
-        console.log("selectedCategoryId : ",selectedCategoryId);
-        setSelectedCategoryId(selectedCategoryId);
-      }
-      }
       
-      getAllSelectedCategoryFromBackEnd(JSON.parse(tokenString).accessToken);
-
-
     }catch(error){
       console.log("error from category and brand useEffect",error)
     }
-
-    
-
-
-
-      
 
     
   
@@ -199,15 +210,10 @@ export default function SellerProducts() {
   }
 
   const handleCreateCategorySubmit = (e) => {
-
   }  
-
   const handleSelectBrandSubmit = (e) => {
-
   }
-
   const handleCreateBrandSubmit = (e) => {
-
   }  
 
   return (
@@ -262,24 +268,29 @@ export default function SellerProducts() {
                       <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Add New Category Name</label>
                       <div>
                         {
-                          category?.map((category)=>(
+                          // 🏠🏠🏠🏠🏠category
+                          onlyNonSelectedCategory?.map((category)=>(
                             <>
                             
                             <div>
                             {/* <input type='checkbox' id={category.CategoryID} name={category.name} value={category.name} onChange={handleCategory} className='rounded-sm'/> <span>{category.name}</span> */}
-                            <input type='checkbox' id={category.CategoryID} checked={
-                              ()=>{
-                                if(selectedCategoriesId.includes(category.CategoryID)){
-                                  console.log(category.CategoryID)
-                                  return true;
-                                }else{
-                                  console.log(category.CategoryID)
-                                  return false;
-                                }
+                            <input type='checkbox' id={category.CategoryID} 
+                            
+                            // checked={
+                            //   ()=>{
+                            //     if(selectedCategoriesId.includes(category.CategoryID)){
+                            //       console.log(category.CategoryID)
+                            //       return true;
+                            //     }else{
+                            //       console.log(category.CategoryID)
+                            //       return false;
+                            //     }
                                 
-                              }
+                            //   }
                                
-                            } name={category.name} value={category.CategoryID} onChange={() => handleCategoryChange(category.CategoryID)} className='rounded-sm'/> <span>{category.name}</span>
+                            // }
+                            
+                            name={category.name} value={category.CategoryID} onChange={() => handleCategoryChange(category.CategoryID)} className='rounded-sm'/> <span>{category.name}</span>
                             
                             </div>
                             

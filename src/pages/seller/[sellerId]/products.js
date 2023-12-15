@@ -26,16 +26,19 @@ export default function SellerProducts() {
   const [productForm, setProductForm] = useState({
     name : "",
     details: "",
-    //productImage: "",
     price: "",
     category: "",
     availableQuantity: "",
     lowestQuantityToStock: ""
 }); // from front-end to DB
 
+const [searchForm, setSearchForm] = useState({
+  search: "",
+});
+
   useEffect(() => {
     //console.log(router);
-    console.log(sellerId);
+    // console.log(sellerId);
     try{
       // http://localhost:3000/seller/14
       
@@ -61,12 +64,9 @@ export default function SellerProducts() {
       }
 
       
-      getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
+      //🏠🏠🏠🏠🏠🏠getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
 
-     // console.log("seller profile 🟢useEffect-> sellerData from database .. formData from front-End🟢","==🔰==", products)
-       
-     // Database theke seller er jonno selected category gula load korte hobe .. product_category_seller table theke
-      
+     
       const getAllSelectedCategoryFromBackEnd = async(token) =>{
         const id = JSON.parse(tokenString).userId;
         const response  = await axios.get( `http://localhost:3000/seller/getAllSelectedCategoryForSeller/${id}`,{
@@ -78,9 +78,7 @@ export default function SellerProducts() {
       if(response){
         //console.log("reponse from selectedCategory : ", response?.data)
         setCategory(response?.data);
-        //const selectedCategoryId = response?.data?.map((category)=>{return category.categoryId.CategoryID});
-        // console.log("selectedCategoryId : ",selectedCategoryId);
-        // setSelectedCategoryId(selectedCategoryId);
+        
       }
       }
       
@@ -103,25 +101,52 @@ export default function SellerProducts() {
 
 
   useEffect(()=>{
+    
     const tokenString = localStorage.getItem('authForEcomerce');  
-    const getProductsDataFromBackEnd = async(token) =>{
-
-      const id = JSON.parse(tokenString).userId;
-      const response = await axios.get(`http://localhost:3000/seller/getAllProductsDetailsById/${id}`,
-      {
-        headers: {
-           Authorization: `Bearer ${token}`,
-        },
-      }
-      );
-      if(response){
-        setProducts(response.data);
-        
-      }
-    }
     
     getProductsDataFromBackEnd(JSON.parse(tokenString).accessToken);
-  },[products])
+  },[]) //products eta likhle server e all time request jacche
+
+  const getProductsDataFromBackEnd = async(token) =>{
+
+    const tokenString = localStorage.getItem('authForEcomerce');  
+    
+    const id = JSON.parse(tokenString).userId;
+    const response = await axios.get(`http://localhost:3000/seller/getAllProductsDetailsBySellerId/${id}`,
+    {
+      headers: {
+         Authorization: `Bearer ${token}`,
+      },
+    }
+    );
+    if(response){
+      setProducts(response.data);
+      
+    }
+  }
+
+
+  
+  const getSearchResultProductsDataFromBackEnd = async(token, searchValue) =>{
+    console.log("seachValue from  getSearchResultProductsDataFromBackEnd: ", searchValue)
+
+    const tokenString = localStorage.getItem('authForEcomerce');  
+    
+    const id = JSON.parse(tokenString).userId;
+     const response = await axios.get(`http://localhost:3000/seller/getProductsBySearch?searchValue=${searchValue}`,
+    
+    {
+      headers: {
+         Authorization: `Bearer ${token}`,
+      },
+    }
+    );
+    if(response){
+      setProducts(response.data);
+      
+    }
+  }
+
 
   const onChange = (e) => {
     // onChange e validation korte hobe .. 
@@ -132,12 +157,52 @@ export default function SellerProducts() {
     }));
 };
 
+const onChangeForSearchForm = (e) => {
+  // onChange e validation korte hobe .. 
+  const tokenString = localStorage.getItem('authForEcomerce');  
+    
+  console.log(e.target.name, " : ", e.target.value)
+  setSearchForm((prevState) => ({
+      [e.target.name]: e.target.value, // ei ta xoss way to play with form data
+  }));
+
+  // ekhanei amader ke database theke data pull kore niye ashte hobe .. 
+  // logic.. 
+  // 1. kichu search field e kichu na thakle shob data pull kore niye ashte hobe 
+  // 2. kichu thakle  shei text related data pull kore niye ashte hobe .. 
+
+  if(e.target.value == ""){
+    // console.log("empty ")
+    getProductsDataFromBackEnd(JSON.parse(tokenString).accessToken);
+  }else{
+    console.log("searchForm ::: ", searchForm)
+    getSearchResultProductsDataFromBackEnd(JSON.parse(tokenString).accessToken, searchForm?.productSearch);
+    // ekhane amra data niye ashbo
+    // const token = JSON.parse(tokenString).accessToken;
+
+    // console.log("token==================", token)
+
+    // const response  = axios.get('http://localhost:3000/seller/getProductsBySearch',searchForm, {
+    //   headers: {
+    //      Authorization: `Bearer ${token}`,
+    //   },
+    // })
+    // if(response){
+    //   console.log("==============response from search : ", response.data);
+    //   setProducts(response.data);
+    // }
+  }
+
+
+  
+};
+
   const handleSubmitNewProduct = (e) => {
     const tokenString = localStorage.getItem('authForEcomerce');    
     const token = JSON.parse(tokenString).accessToken;
       
 
-    e.preventDefault();
+    //e.preventDefault();
     console.log("product form ::: : ",productForm);
     ////////////////////////////////////////////////////////////////////const id = JSON.parse(tokenString).userId;
     const response = axios.post(`http://localhost:3000/seller/createProduct`,productForm,{
@@ -186,7 +251,8 @@ export default function SellerProducts() {
                       </form>
                     </div>
                   {/* ////////////////////////////////////////////////// */}
-                  <form noValidate onSubmit={handleSubmitNewProduct}>
+                  
+                  <form className="modal-action flex flex-col"  noValidate method="dialog" onSubmit={handleSubmitNewProduct}>
                     <div class="mb-6">
                       <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Name</label>
                       <input onChange={onChange} type="name" id="name" name='name' class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write product name here..." />
@@ -239,8 +305,9 @@ export default function SellerProducts() {
                       <input type="text" onChange={onChange} name='lowestQuantityToStock' id="lowestQuantityToStock" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write lowest quantity to stock here..." />
                     </div>
                     
-                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+                    <button  type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                   </form>
+                  
                   {/* ////////////////////////////////////////////////// */}
                   <div className="modal-action">
                     <form method="dialog">
@@ -252,9 +319,19 @@ export default function SellerProducts() {
               </dialog>
               {/* // Add product Modal  -------------------------------------------------End-------------*/}    
 
+            {/* // Search Field  -------------------------------------------------Start-------------*/}    
 
+            
+            {/* <SearchField/> */}
+            <div className="border-solid  overflow-hidden">
+                <form class="flex justify-center content-center" role="search">
+                    <input className='rounded-lg w-56  text-orange-800' name="productSearch" onChange={onChangeForSearchForm}  placeholder='Search'/>
+                    {/* text-orange-800 🔰🔗⚫ text er color set korte hobe  */}
+                    <button type="submit"  className='border-2 rounded-lg ml-3 p-1'>Search</button>
+                </form>
+            </div>
+            {/* // Search Field  -------------------------------------------------End-------------*/}    
 
-            <SearchField/>
           </div>
           
           {/* already add kora product er list thakbe  */}

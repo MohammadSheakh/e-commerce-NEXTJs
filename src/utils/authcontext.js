@@ -10,48 +10,34 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
   const [user, setUser] = useState(null);
   
-  const login = (user) => {
-    // setUser(user, cookie);
-    setUser(user);
-    //console.log("from login -> authContext 🔰 : ",user)
-  }
-
-  const getUser = () =>{
-    //console.log("user from getUser🔰 ->Navbar.js:  "+user)
+  const login = () => {
+    
     const tokenString = localStorage.getItem('authForEcomerce');
-    const token = JSON.parse(tokenString);
-    return token;
+    
+
+    /// setUser(userData);
+    setUser(JSON.parse(tokenString)); 
+
+    console.log("🔰🔰🔰🔰🔰 Login 🔰🔰🔰🔰🔰🔰", user, "--", JSON.parse(tokenString));
+    
   }
-  
 
   const checkUser = () => {
+    
     const token = localStorage.getItem('authForEcomerce');
     //if(user.userEmailAddress!=null && user.cookie!=null) {
     if(token){
-      return true;
+      console.log("🔰🔰🔰🔰🔰 check User -> token exist🔰🔰🔰🔰🔰🔰", JSON.parse(token));
+      setUser(JSON.parse(token)); 
+      return JSON.parse(token);
     }else{
+      console.log("🔰🔰🔰🔰🔰 check User -> token does not exist🔰🔰🔰🔰🔰🔰");
       return false;
     }
   }
 
-  const logout = () => {
-    doSignOut();
-  }
-
-  async function doSignOut(){
-    try{
-      const response = await axios.get(process.env.API_ENDPOINT+'/logout');
-      console.log("response: ", response);
-      setUser(null);
-      document.cookie = null;
-      ////////////////////////////////////////////localStorage.clear();
-      router.push("/"); // 🔰⚫🔗 Router.push()
-    }catch(error){
-      console.log("error:", error);
-    }
-  }
   return (
-    <AuthContext.Provider value={{user, getUser, login, logout, checkUser }}>
+    <AuthContext.Provider value={{user, login, checkUser}}>
       {children}
     </AuthContext.Provider>
   );
@@ -60,3 +46,12 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
+
+
+
+  // const getUser = () =>{
+  //   //console.log("user from getUser🔰 ->Navbar.js:  "+user)
+  //   const tokenString = localStorage.getItem('authForEcomerce');
+  //   const token = JSON.parse(tokenString);
+  //   return token;
+  // }

@@ -72,6 +72,47 @@ export default function ReviewCard({review}) {
       router.push("/seller/14/review"); 
     }
   }
+
+  const handleLike = (e) => {
+    e.preventDefault();
+
+    const like = async() => {
+      const token = JSON.parse(localStorage.getItem('authForEcomerce')).userId;
+      const token2 = JSON.parse(localStorage.getItem('authForEcomerce')).accessToken;
+      console.log(token, "=======", token2);
+      const response  = await axios.post(`http://localhost:3000/seller/doLikeDislikeToAReview?reviewId=${review.reviewId}&sellerId=${token}&likeDislikeStatus=like`,{
+        headers:{
+          Authorization: `bearer ${token2}`
+        }
+      })
+      if(response.data){
+        // hoy er basis e like count ta update korbo 
+        // othoba db er arekta operation chalabo ekhane
+        console.log("====== reponse.data : ", response.data) 
+  
+      }
+    }
+
+    like();
+    
+  }
+  const handleDislike = (e) => {
+
+    e.preventDefault();
+    const token = JSON.parse(localStorage.getItem('authForEcomerce')).userId;
+    const token2 = JSON.parse(localStorage.getItem('authForEcomerce')).accessToken;
+    const response  =  axios.post(`http://localhost:3000/seller/doLikeDislikeToAReview?reviewId=${review.reviewId}&sellerId=${token}&likeDislikeStatus=dislike`,{
+      headers:{
+        Authorization: `bearer ${token2}`
+      }
+    })
+    if(response.data){
+      // hoy er basis e like count ta update korbo 
+      // othoba db er arekta operation chalabo ekhane 
+      
+    }
+  }
+  
   return (
     <>
       <div id='reviewBody' style={{marginBottom:"10px"}} className='relative rounded-lg p-4 w-auto h-auto bg-PrimaryColorDarkHover border-2'>
@@ -140,15 +181,19 @@ export default function ReviewCard({review}) {
                   {/* ///////////////////////////////Review Reply gula ekhane thakbe - END ////////////// */}
                   <div style={{marginTop:"20px"}} className='flex gap-3 mt-2'>
                     {/* like dislike buttons  */}
-                    <button className='btn'>
+                    <button className='btn' onClick={handleLike}>
                     <BiLike />
                     <BiSolidLike />
 
-                       5</button>
-                    <button className='btn'>
+                       {/* 5 */}
+                       {review?.likeCount}
+                    </button>
+                    <button className='btn' onClick={handleDislike}>
                     <BiDislike />
                     <BiSolidDislike />
-                       5</button>
+                       {/* 5 */}
+                       {review?.disLikeCount}
+                       </button>
 
                     {/* // ekhane reply er input form thakbe ..  */}
                     {/* /////////////////flowbite/////////////////////// */}

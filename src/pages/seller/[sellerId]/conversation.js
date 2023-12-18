@@ -214,7 +214,7 @@ export default function SellerProducts() {
 
                 {/* conversations */}
                 {/* // ekhane onek gula Conversation Call korbo  */}
-                <div className='flex flex-col scrollbar-dark scrollbar-rounded' style={{height:"400px",overflowBlock:"hidden", overflowY:"scroll"}}>
+                <div className='flex flex-col scrollbar-dark scrollbar-rounded' style={{height:"300px",overflowBlock:"hidden", overflowY:"scroll"}}>
                 
                 {/* // conversationList map korte hobe  */}
                 {

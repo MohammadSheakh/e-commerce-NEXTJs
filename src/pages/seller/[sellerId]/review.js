@@ -48,6 +48,7 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
     }
   });
   if(response.data){
+    console.log("🏠🏠🏠🏠 all afterSales Review : ", response.data)
     setAfterSalesReviews(response.data);
     //console.log(response.data)
   }

@@ -11,12 +11,12 @@ const SingleSender = ({  message, date }) => {
       <div className='justify-self-start'></div>
       <div className='justify-self-end'>
         {/* ////////////////////////////////// */}
-        <div className='flex'>
+        <div className='flex gap-x-3'>
           <div className='group'>
             <div className='border-2 relative  w-auto bg-PrimaryColorDark p-1 rounded-lg'>
             {message}
             </div>
-            <span className='absolute invisible  group-hover:visible'>
+            <span style={{right:"50px"}} className='absolute invisible  group-hover:visible'>
               {date}
             </span>
           </div>

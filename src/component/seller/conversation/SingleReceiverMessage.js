@@ -7,7 +7,7 @@ export default function SingleReceiverMessage({textAlign, message, date}) {
     <>
     {/* <p style={{textAlign: "left"}} design bug > */}
     <p style={{textAlign: {textAlign}}} >
-            <div className=' flex relative' style={{marginTop:"25px"}}>
+            <div className=' flex relative gap-x-3' style={{marginTop:"25px"}}>
             {/* group flex*/}
             <div>
               <Image
@@ -26,7 +26,7 @@ export default function SingleReceiverMessage({textAlign, message, date}) {
                             {/* Date */}
                             {date}
                     </div>
-                  <div style={{maxWidth: "200px"}} className='border-2 w-auto break-normal  bg-PrimaryColorDark p-1 rounded-lg ml-2'>
+                  <div style={{maxWidth: "200px"}} className='border-2 w-auto break-normal  bg-PrimaryColorDark p-1 rounded-lg ml-0'>
                       {/* Receiver's text */}
                       {message}
                   </div>

@@ -30,18 +30,22 @@ export default function SellerProducts() {
  }
   
  const getAllGeneralReviewForSeller = async(token) =>{
+  
   const response = await axios.get(`http://localhost:3000/seller/getAllGeneralReview/14`,{
     headers:{
       Authorization: `bearer ${token}`
     }
   });
+
   if(response.data){
+
     setGeneralReviews(response.data);
    // console.log(response.data)
   }
 }
 
 const getAllAfterSalesReviewForSeller = async(token) =>{
+
   const response = await axios.get(`http://localhost:3000/seller/getAllAfterSalesReview/14`,{
     headers:{
       Authorization: `bearer ${token}`
@@ -60,12 +64,9 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
     
     const tokenString = localStorage.getItem('authForEcomerce'); 
 
-    
-
     getAllAfterSalesReviewForSeller(JSON.parse(tokenString).accessToken);
     getAllGeneralReviewForSeller(JSON.parse(tokenString).accessToken);
 
-    
   },[])
 
   useEffect(() => {
@@ -113,7 +114,7 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
 
                   generalReviews?.map((review) =>{
                   return (
-                     <ReviewCard review={review}/>
+                     <ReviewCard reviewId={review.reviewId}/>
                   )
                     
                 })
@@ -146,10 +147,11 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
               {
 
               afterSalesReviews?.map((review) =>{
-              return (
-                <ReviewCard review={review}/>
-              )
-                
+
+                return (
+                  <ReviewCard reviewId={review.reviewId}/>
+                )
+                  
               })
 
               }

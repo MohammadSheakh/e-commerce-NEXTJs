@@ -40,6 +40,9 @@ const { getUser, checkUser } = useAuth();
             // true return korle .. 
             // user ke user1 er moddhe assign kore dibo .. user kintu ashbe context theke
             setUser1(details);
+
+            // pull users image from database .. and save it to useState 
+
         }
     },[])
 
@@ -179,14 +182,25 @@ useEffect(() => {
                 
                 <div>
                 <li>
-                    <Image
-                    src={logo} // mohammad
+                    {/* <Image
+                    src={logo}
                     width={40}
-                    // height={200}
+                    
                     className='rounded-full ml-3'
-                    quality={75} // default is 75
+                    quality={75}
                     alt="Image Can not be shown from navbar.js"
-                    />
+                    /> */}
+
+            <Image
+        // productImage
+                src={`http://localhost:3000/seller/getLoggedInUserImage/?imageName=1703081540829pc.jpg`}
+                width={50}
+                 height={50}
+                className='rounded-md hidden xl:block'
+                style={{width:"50px", height:"50px"}}
+                quality={75} // default is 75
+                alt="Picture of banner"
+            />
                 </li>
                     
                         

@@ -16,7 +16,7 @@ export default function SellerProfile(props) {
   //<SellerProfile shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
         
   
-  const {shopName,offlineShopAddress,shopGoogleMapLink, userId } =  props;
+  const {shopName,offlineShopAddress,shopGoogleMapLink, userId, sellerImage } =  props;
 
   const [tokenString, setTokenString] = useState(null);
 
@@ -41,14 +41,32 @@ export default function SellerProfile(props) {
               <div className='rounded-lg  flex flex-col  justify-center content-center'>
                 {/* Main Category  flex-col*/}
                 {/* // Shop logo image  */}
-                <Image
+                {
+                  sellerImage? 
+                  (<>
+                  <Image
                 className="rounded-lg"
-                src={LenovoPc124}
+                src={`http://localhost:3000/seller/getLoggedInUserImage/?imageName=${sellerImage}`}
+                // src={LenovoPc124}
+                width={120}
+                height={150}
+                quality={75} // default is 75
+                alt="Picture of banner"
+                />
+                  
+                  </>):(<>
+                  
+                    <Image
+                className="rounded-lg"
+                 src={LenovoPc124}
                 width={120}
                 // height={200}
                 quality={75} // default is 75
                 alt="Picture of banner"
                 />
+                  </>)
+                }
+                
                 {/* /////////// */}
                 {/* // Shop Name */}
                 <h1 className=''>{shopName}</h1>

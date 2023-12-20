@@ -20,6 +20,7 @@ export default function SellerProfileDetails() {
   const {sellerId} = router.query;
   const [error, setError] = useState(null);
   const [sellerData, setSellerData] = useState(null);
+  const [sellerImage, setSellerImage] = useState(null);
   const [formData, setFormData] = useState({
     id: "",
     sellerName: "",
@@ -43,6 +44,14 @@ export default function SellerProfileDetails() {
   // er maddhome ..  
 
 
+  const [refresh, setRefresh] = useState(false);
+
+  const handleRefresh = ()=> {
+    setTimeout(() => {
+      setRefresh(false);
+    }, 1000)
+      
+  }
 
   useEffect(() => {
     try{
@@ -50,30 +59,7 @@ export default function SellerProfileDetails() {
       
 
       const tokenString = localStorage.getItem('authForEcomerce');    
-      //console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString).accessToken );
-      //console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString) );
       
-
-      // const getSellerDataFromBackEnd = async(token) =>{
-      //   const response = await axios.get('http://localhost:3000/seller/14',
-      //   {
-      //     headers: {
-      //       // 'Content-Type': 'application/json',
-      //       // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      //   );
-      //   if(response){
-      //     //console.log("data🔰 : ", response.data)
-      //     setSellerData(response.data);
-      //     setFormData(sellerData);
-      //     // return response.data;
-      //   }
-      // }
-
-      
-
       getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
 
       // console.log("seller profile 🟢useEffect-> sellerData from database .. formData from front-End🟢", sellerData,"==🔰==", formData)
@@ -86,7 +72,7 @@ export default function SellerProfileDetails() {
       console.log("Error 🔴", error)
     }
      
-  },[sellerId])
+  },[sellerId,refresh])
 
 
   const getSellerDataFromBackEnd = async(token) =>{
@@ -103,9 +89,19 @@ export default function SellerProfileDetails() {
       //console.log("data🔰 : ", response.data)
       setSellerData(response.data);
       setFormData(sellerData);
+      setSellerImage(response.data.sellerImage);
       // return response.data;
     }
   }
+
+  useEffect(() => {
+    if(sellerData){
+      // sellerData.sellerPassword =  "";
+
+      // setFormData(sellerData);
+    }
+    
+  }, [sellerData])
 
   const onChange = (e) => {
    // console.log("🔴 onChange e.target.name : ", e.target.name, e.target.value)
@@ -114,12 +110,35 @@ export default function SellerProfileDetails() {
         ...prevState,
         [e.target.name]: e.target.value, // ei ta xoss way to play with form data
     }));
+};
 
-    
+const onFileChange = (e) => {
+  // Handle file upload and update formData with the file data
+  //const file = e.target.files[0];
+  const sellerImage = e.target.files[0];
+  // const File = {
+  //   fieldName: 'sellerImage',
+  //   originalFileName: e.target.files[0].name,
+  //   encoding: e.target.files[0].encoding,
+  //   mimetype: e.target.files[0].type,
+  
+  // }
+
+  console.log("fileName : ", sellerImage)
+  setSellerData((prevState) => ({
+    ...prevState,
+    sellerImage: sellerImage,
+  }));
+  console.log("formData : ", sellerData)
 };
 
 const handleSubmit = async (e) => {
+  setRefresh(!refresh);
+
+ 
+
   e.preventDefault();
+  console.log("after handleSubmit : ", sellerData)
   
   setError("");
 
@@ -128,78 +147,29 @@ const handleSubmit = async (e) => {
     const tokenString = localStorage.getItem('authForEcomerce'); 
     setTokenString(tokenString); 
     console.log("sellerData : 🟢",sellerData);  
-      //console.log("🔗 tokenString from transform Request 🟢 : ", JSON.parse(tokenString).accessToken );
-      
-      const user =
-      {
-        sellerName: "te",
-        //sellerEmailAddress: "",
-        // sellerPassword: "",
-        // sellerPhoneNumber:"",
-        // sellerDescription: "",
-        // sellerImage: "",
-        // shopName: "",
-        // shopDescription: "",
-        // shopLogo: "",
-        // shopName: "",
-        // status: "",
-        // rating:"",
-        // offlineShopAddress: "",
-        // googleMapLocation: "",
-        
-      }
 
-      // const response = await api.patch('/seller/14',
-      // user, 
-      // {
-      //   headers: { Authorization: `Bearer ${JSON.parse(tokenString).accessToken}`, },
-      // }
-      // );
-      // if(response){
-      //   console.log("done after form submitting 🔰🔰 : ",response.data)
-        
-      // }
-      
-
+    
+    
 
       const response = await axios.patch('http://localhost:3000/seller/update/14',
       sellerData
       ,
       {
-        //headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk`,
         headers: { Authorization: `Bearer ${JSON.parse(tokenString).accessToken}`,
-        
+        "Content-Type": "multipart/form-data", 
         "Cache-Control": "no-cache",
       },
-        
       }
       );
       if(response){
         console.log("done after form submitting 🔰🔰 : ",response.data)
-
-        // const user = {
-        //   userId: JSON.parse(tokenString)?.userId,
-        //   userName: JSON.parse(tokenString)?.user?.userName,
-        //   userEmailAddress: JSON.parse(tokenString)?.user?.userEmailAddress,
-        //   accessToken: JSON.parse(tokenString)?.accessToken,
-        //   };
-
-        // const loggedInUser = {
-        //   accessToken:  JSON.parse(tokenString)?.accessToken,
-        //   user: user,
-        //   userId: JSON.parse(tokenString)?.userId,
-        // }
-
-        //   localStorage.setItem(
-        //       "authForEcomerce",
-        //       JSON.stringify(
-        //         loggedInUser
-        //       )
-        //   );
-        
+         setTimeout(() => {
+          setRefresh(!refresh);
+         },1000)
       }
       
-
+//headers: { Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk`,
+        
       
 
     }catch (error) {
@@ -221,7 +191,7 @@ const handleSubmit = async (e) => {
 
       <div className=''>
       
-        <SellerProfile userId={tokenString?.userId} shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
+        <SellerProfile sellerImage={sellerImage} userId={tokenString?.userId} shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
         <div className='mx-4 my-4 rounded-md bg-PrimaryColorDarkHover p-10 w-auto h-auto text-PureWhite'>
           {/* Personal Details */}
           {/* // ekhane amra seller er details dekhabo and edit korar option dibo  */}
@@ -243,12 +213,13 @@ const handleSubmit = async (e) => {
 
               <div class="grid md:grid-cols-2 md:gap-6">
               <div class="relative z-0 w-full mb-6 group">
-                  <input type="password" value={sellerData?.sellerPassword} onChange={onChange} name="sellerPassword" id="sellerPassword" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+              {/* value={sellerData?.sellerPassword} */}
+                  <input type="password"  onChange={onChange} name="sellerPassword" id="sellerPassword" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                   <label for="sellerPassword" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     Password</label>
               </div>
                 <div class="relative z-0 w-full mb-6 group">
-                    <input type="tel" value={sellerData?.sellerPhoneNumber} /* pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" */ name="sellerPhoneNumber" id="sellerPhoneNumber" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                    <input type="tel"  onChange={onChange} value={sellerData?.sellerPhoneNumber} /* pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" */ name="sellerPhoneNumber" id="sellerPhoneNumber" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
                     <label for="sellerPhoneNumber" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                       Phone number (01XXXXXXXXX)</label>
                 </div>
@@ -258,7 +229,7 @@ const handleSubmit = async (e) => {
                       Description</label>
                 </div>
                 <div class="relative z-0 w-full mb-6 group">
-                    <input type="file" name="sellerImage" id="sellerImage" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+                    <input type="file" name="sellerImage" onChange={onFileChange} id="sellerImage" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
                     <label for="sellerImage" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                       Image</label>
                 </div>
@@ -314,7 +285,21 @@ const handleSubmit = async (e) => {
                       Google Map Location Link</label>
                 </div>
               </div>
-              <button type="submit" class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+              <button  type="submit" class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+              {
+                refresh?(<>
+                  <span className="loading loading-spinner loading-md"></span>
+                  {
+                    // setTimeout(() => {
+                    //   setRefresh(false);
+                    // }, 1000
+                    // )
+                    handleRefresh()
+                  }
+                </>):(<>
+                
+                </>)
+              }
             </form>
           {/* ////////////////////////////////////////////////////// */}
         </div>

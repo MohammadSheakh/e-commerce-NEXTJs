@@ -382,9 +382,17 @@ export default function SellerProducts() {
                 {/* <ConversationBody loggedInUserEmail={loggedInUserEmail} selectedConversation={selectedConversation}/> */}
 
                   <div className='w-auto border-2 h-8 bg-PrimaryColorDark  flex justify-end' >
-                  <button onClick={() => handleDelete(conversationId)} className='mr-4'>
+                 {
+                  conversationId ? (
+                    <>
+                    <button onClick={() => handleDelete(conversationId)} className='mr-4'>
                       <MdDelete style={{fontSize:"25px", backgroundColor:"lightBlue" ,color: "purple", borderRadius: "5px"}}/>
                     </button>
+                    </>
+                  ):(<>
+                  </>)
+                 }
+                  
                   </div>
                   <div className='w-auto  overflow-hidden bg-PrimaryColorDark' style={{position:"relative", height:"300px", overflowBlock:"hidden", overflowY:"scroll"}} >
                   

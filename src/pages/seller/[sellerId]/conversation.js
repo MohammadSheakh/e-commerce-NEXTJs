@@ -44,8 +44,6 @@ export default function SellerProducts() {
     senderEmail: "",
   });
 
-
-
   const [senderEmail, setSenderEmail] = useState(null);
   const [receiverEmail, setReceiverEmail] = useState(null);
 

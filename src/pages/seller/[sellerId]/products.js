@@ -105,7 +105,7 @@ const [refresh, setRefresh] = useState(false);
     }
 
      
-  },[])//sellerId
+  },[])
 
 
   useEffect(()=>{

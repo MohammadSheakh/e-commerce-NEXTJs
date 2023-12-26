@@ -17,6 +17,7 @@ export default function ReviewCard({reviewId}) {
   const [showAllReplies, setShowAllReplies] = useState(false);
 
   const [review, setReview] = useState(null);
+  const [likeDislikeStatus, setLikeDislikeStatus] = useState(false);
 
 //   const [refresh, setRefresh] = useState(false);
 
@@ -26,7 +27,7 @@ export default function ReviewCard({reviewId}) {
 
   const [reviewReplyForm, setReviewReplyForm] = useState({
     replyDetails: "",
-    reviewId: review?.reviewId,
+    reviewId: 0,// review?.reviewId
     sellerId: "", // sellerId from local storage
 
   });
@@ -52,12 +53,13 @@ export default function ReviewCard({reviewId}) {
       });
       if(response.data){
         setReview(response.data);
+
        // console.log(response.data)
       }
     }
     getReviewByReviewId(JSON.parse(tokenString).accessToken);
 
-  },[])//refresh
+  },[likeDislikeStatus])//refresh
 
 
   const handleDelete = async(reviewId) => {
@@ -92,6 +94,7 @@ export default function ReviewCard({reviewId}) {
     
     e.preventDefault();
     reviewReplyForm.sellerId = token;
+    reviewReplyForm.reviewId = review?.reviewId;
     console.log("handle reply submit : ", reviewReplyForm);
 
     const response = axios.post("http://localhost:3000/seller/addReplyToAReview", reviewReplyForm,{
@@ -121,6 +124,7 @@ export default function ReviewCard({reviewId}) {
       // hoy er basis e like count ta update korbo 
       // othoba db er arekta operation chalabo ekhane
       console.log("====== reponse.data : ", response.data) 
+      setLikeDislikeStatus(!likeDislikeStatus);
 
     }
   }
@@ -131,22 +135,7 @@ export default function ReviewCard({reviewId}) {
     likeDislike(statusValue);
     
   }
-  // const handleDislike = async(e) => {
-
-  //   e.preventDefault();
-  //   const token = JSON.parse(localStorage.getItem('authForEcomerce')).userId;
-  //   const token2 = JSON.parse(localStorage.getItem('authForEcomerce')).accessToken;
-  //   const response  = await axios.post(`http://localhost:3000/seller/doLikeDislikeToAReview?reviewId=${review.reviewId}&sellerId=${token}&likeDislikeStatus=dislike`,{
-  //     headers:{
-  //       Authorization: `bearer ${token2}`
-  //     }
-  //   })
-  //   if(response.data){
-  //     // hoy er basis e like count ta update korbo 
-  //     // othoba db er arekta operation chalabo ekhane 
-      
-  //   }
-  // }
+  
   
   return (
     <>
@@ -180,21 +169,10 @@ export default function ReviewCard({reviewId}) {
                   </div>
                   {/* ////////////////////////////// Review Reply gula ekhane thakbe - START ///////////////////////////////////////////// */}
 
-                  {/* {
+                  
 
-
-                    review.replies?.map((reply) => {
-                      const {replyId, replyDetails, createdAt} = reply;
-                      return(
-                      <>
-                      {replyId} : {replyDetails}  : {createdAt} 
-                      </>
-                    )
-                    }
-                    )
-                  } */}
-
-                  <div className="max-w-md mx-auto p-4 border">
+                  {/* //border */}
+                  <div className="max-w-md mx-auto p-4 ">
                         {review?.replies?.slice(0, showAllReplies ? review?.replies?.length : 1).map((reply, index) => (
                           <div key={index} className="reply">
                             <p>{reply.replyDetails}</p>
@@ -237,7 +215,8 @@ export default function ReviewCard({reviewId}) {
                     <form className='flex  gap-3' onSubmit={handleReplySubmit}>
                       
                         <input  type="text" onChange={onChange} id="replyDetails" name='replyDetails' class="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Give Reply..." required/>
-                      
+                        
+                        <input  className='z-0' style={{width:"0px"}} type="" id="reviewId" name="review?.reviewId" value={review?.reviewId}/>
                       
                       <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
                     </form>

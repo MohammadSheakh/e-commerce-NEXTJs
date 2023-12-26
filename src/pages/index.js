@@ -1,8 +1,8 @@
 import Image from 'next/image'
 // import { Inter } from 'next/font/google'
 
-import Layout from '@/layout/layout'
-import MainCategory from '@/layout/mainCategory'
+import Layout from '@/pages/layout/layout'
+import MainCategory from '@/pages/layout/mainCategory'
 import Banner from '@/component/home/Banner'
 import SearchField from '@/component/home/SearchField'
 import Categories from '@/component/common/category/categories'

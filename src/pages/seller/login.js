@@ -132,6 +132,7 @@ function Login() {
                         accessToken: response.data.access_token,
                         user: user,
                         userId: user.userId,
+                        userImage: response?.data?.userImage,
 
                     })
                 );

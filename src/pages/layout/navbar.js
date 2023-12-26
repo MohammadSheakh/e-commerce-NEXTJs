@@ -3,8 +3,8 @@ import { FaAlignJustify } from "react-icons/fa";
 import Link from "next/link";
 import Nav from './Nav';
 import { MdLogin, MdNightlight } from "react-icons/md";
-import logo from "../../public/assets/icons/home/logo.png";
-import mohammad from "../../public/images/navbar/mohammad.jpg";
+import logo from "../../../public/assets/icons/home/logo.png";
+import mohammad from "../../../public/images/navbar/mohammad.jpg";
 import Image from 'next/image';
 import api from '@/utils/api';
 
@@ -20,9 +20,6 @@ const { getUser, checkUser } = useAuth();
  const [user1, setUser1] = useState(null);  // user1 is the user from localstorage from this page
  const [data, setData] = useState(null); 
   const router = useRouter();
-
-  //const {user} = user2;
-
 
     useEffect(() => {
         //console.log("authcontext's user from navbar.js🔰🔰🔰🔰", user);
@@ -44,23 +41,13 @@ const { getUser, checkUser } = useAuth();
             // pull users image from database .. and save it to useState 
 
         }
-    },[])
+    },[]) // user1 ... eta dile prochur refresh hocche 🔴🔴
 
-    useEffect(() => {
-        console.log("user1 from getUsersInfo navbar.js 🔰🔰 ",user1)
-    },[])
+    // useEffect(() => {
+    //     console.log("user1 from getUsersInfo navbar.js 🔰🔰 ",user1)
+    // },[])
 
-//   async function getUsersInfo(){
-//     console.log("user1 from getUsersInfo navbar.js 🔰🔰 ",user1)
-//     try{
-//         console.log("user1?.userId : ", user1?.userId)
-//       const response = await api.get(14);
-//       setData(response.data);
-    
-//     }catch(error){
-//       console.log("error:", error);
-//     }
-//   }
+
 
 //const user1 = null;
   const logout = () => {
@@ -182,25 +169,23 @@ useEffect(() => {
                 
                 <div>
                 <li>
-                    {/* <Image
-                    src={logo}
-                    width={40}
-                    
-                    className='rounded-full ml-3'
-                    quality={75}
-                    alt="Image Can not be shown from navbar.js"
-                    /> */}
 
-            <Image
-        // productImage
-                src={`http://localhost:3000/seller/getLoggedInUserImage/?imageName=1703081540829pc.jpg`}
-                width={50}
-                 height={50}
-                className='rounded-md hidden xl:block'
-                style={{width:"50px", height:"50px"}}
-                quality={75} // default is 75
-                alt="Picture of banner"
-            />
+                {user1?.userId  && (
+                    <>
+                    <Image
+    
+    src={`http://localhost:3000/seller/getLoggedInUserImage/?imageName=${user1?.userImage}`} //1703081540829pc.jpg
+    width={50}
+     height={50}
+    className='rounded-md hidden xl:block'
+    style={{width:"50px", height:"50px"}}
+    quality={75} // default is 75
+    alt=""
+/>
+                    </>
+                )}
+                    
+            
                 </li>
                     
                         

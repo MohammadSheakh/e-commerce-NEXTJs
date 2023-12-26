@@ -1,4 +1,4 @@
-import Navbar from '@/layout/navbar';
+import Navbar from '@/pages/layout/navbar';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
@@ -6,7 +6,7 @@ import LenovoPc124 from '../../../public/images/Products/LenovoPc124.jpg';
 import Image from 'next/image';
 import SubNavbarOfProductDetails from '@/component/common/productDetails/subNav/SubNavbarOfProductDetails';
 import SubNavbarOfSellerProfile from '@/component/seller/subNav/SubNavbarOfSellerProfile';
-import MainCategory from '@/layout/mainCategory';
+import MainCategory from '@/pages/layout/mainCategory';
 import { MdOutlineLocationCity } from "react-icons/md";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaLink } from "react-icons/fa";
@@ -37,7 +37,6 @@ export default function SellerProfileDetails() {
     rating:"",
     offlineShopAddress: "",
     googleMapLocation: "",
-    
   });
   const [tokenString, setTokenString] = useState(null);
   // ekhon user logged in thakle .. tar jonno .. shob data .. database theke pull kore niye ashbo axios 
@@ -58,13 +57,30 @@ export default function SellerProfileDetails() {
       // http://localhost:3000/seller/14
       
 
-      const tokenString = localStorage.getItem('authForEcomerce');    
+      const tokenString1 = localStorage.getItem('authForEcomerce');    
       
-      getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
+      
+      const getSellerDataFromBackEnd = async(token) =>{
+        const id = JSON.parse(tokenString1).userId;
+        const response = await axios.get(`http://localhost:3000/seller/${id}`,
+        {
+          headers: {
+            // 'Content-Type': 'application/json',
+            // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk
+            Authorization: `Bearer ${token}`,
+          },
+        }
+        );
+        if(response){
+          //console.log("data🔰 : ", response.data)
+          setSellerData(response.data);
+          setFormData(sellerData);
+          setSellerImage(response.data.sellerImage);
+          // return response.data;
+        }
+      }
+      getSellerDataFromBackEnd(JSON.parse(tokenString1).accessToken);
 
-      // console.log("seller profile 🟢useEffect-> sellerData from database .. formData from front-End🟢", sellerData,"==🔰==", formData)
-          
-      
 
       
     }catch(error){
@@ -74,25 +90,10 @@ export default function SellerProfileDetails() {
      
   },[sellerId,refresh])
 
+  //const tokenString1 = localStorage.getItem('authForEcomerce');    
+     
 
-  const getSellerDataFromBackEnd = async(token) =>{
-    const response = await axios.get(`http://localhost:3000/seller/${sellerId}`,
-    {
-      headers: {
-        // 'Content-Type': 'application/json',
-        // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZWxsZXJFbWFpbEFkZHJlc3MiOiJhQGdtYWlsLmNvbSIsInN1YiI6IjE0IiwiaWF0IjoxNzAxMTk1NTg2LCJleHAiOjE3MDExOTU2NDZ9.gLX9nHTlLha0_GREcsc8nrlM0hHgJUsTsA5CZgryrEk
-        Authorization: `Bearer ${token}`,
-      },
-    }
-    );
-    if(response){
-      //console.log("data🔰 : ", response.data)
-      setSellerData(response.data);
-      setFormData(sellerData);
-      setSellerImage(response.data.sellerImage);
-      // return response.data;
-    }
-  }
+  
 
   useEffect(() => {
     if(sellerData){
@@ -147,9 +148,6 @@ const handleSubmit = async (e) => {
     const tokenString = localStorage.getItem('authForEcomerce'); 
     setTokenString(tokenString); 
     console.log("sellerData : 🟢",sellerData);  
-
-    
-    
 
       const response = await axios.patch('http://localhost:3000/seller/update/14',
       sellerData

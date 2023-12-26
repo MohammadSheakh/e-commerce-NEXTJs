@@ -1,4 +1,4 @@
-import Navbar from '@/layout/navbar';
+import Navbar from '@/pages/layout/navbar';
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
@@ -6,7 +6,7 @@ import LenovoPc124 from '../../../../public/images/Products/LenovoPc124.jpg';
 import Image from 'next/image';
 import SubNavbarOfProductDetails from '@/component/common/productDetails/subNav/SubNavbarOfProductDetails';
 import SubNavbarOfSellerProfile from '@/component/seller/subNav/SubNavbarOfSellerProfile';
-import MainCategory from '@/layout/mainCategory';
+import MainCategory from '@/pages/layout/mainCategory';
 import { MdOutlineLocationCity } from "react-icons/md";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaLink } from "react-icons/fa";
@@ -23,6 +23,7 @@ export default function SellerProducts() {
   const [error, setError] = useState(null);
   const [products, setProducts] = useState(null); // from DB
   const [category, setCategory] = useState(null); // from DB
+  const [tokenString, setTokenString] = useState(null);
   const [productForm, setProductForm] = useState({
     name : "",
     details: "",
@@ -43,8 +44,8 @@ const [searchForm, setSearchForm] = useState({
       // http://localhost:3000/seller/14
       
 
-      const tokenString = localStorage.getItem('authForEcomerce');    
-      //console.log("🔗 tokenString  🟢 : ", JSON.parse(tokenString).userId );
+      const tokenString = localStorage.getItem('authForEcomerce'); 
+      setTokenString(JSON.parse(tokenString));    
       
 
       const getSellerDataFromBackEnd = async(token) =>{
@@ -59,12 +60,12 @@ const [searchForm, setSearchForm] = useState({
         );
         if(response){
           setSellerData(response.data);
-          
+          console.log("🏠🏠🏠🏠 from products.js : ::", response.data)
         }
       }
 
       
-      //🏠🏠🏠🏠🏠🏠getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
+      getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
 
      
       const getAllSelectedCategoryFromBackEnd = async(token) =>{
@@ -229,8 +230,10 @@ const onChangeForSearchForm = (e) => {
 
       <div className=''>
       
-      <SellerProfile shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
+      {/* <SellerProfile shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/> */}
         
+      <SellerProfile sellerImage={tokenString?.userImage} userId={tokenString?.userId} shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
+
         {/* <SellerProfile/> */}
         <div className='mx-4 my-4 rounded-md bg-PrimaryColorDarkHover w-auto h-auto text-PureWhite'>
           {/* Products */}

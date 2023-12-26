@@ -1,11 +1,11 @@
-import Navbar from '@/layout/navbar';
+import Navbar from '@/pages/layout/navbar';
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 
 import Image from 'next/image';
 import SubNavbarOfProductDetails from '@/component/common/productDetails/subNav/SubNavbarOfProductDetails';
 import SubNavbarOfSellerProfile from '@/component/seller/subNav/SubNavbarOfSellerProfile';
-import MainCategory from '@/layout/mainCategory';
+import MainCategory from '@/pages/layout/mainCategory';
 import { MdDelete, MdOutlineLocationCity } from "react-icons/md";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaLink } from "react-icons/fa";
@@ -28,9 +28,9 @@ export default function SellerProducts() {
   // for conversation list
   const [conversationList, setConversationList] = useState([]); // from DB
   const [selectedConversation, setSelectedConversation] = useState([]);// null chilo 
-
+  const [sellerData, setSellerData] = useState(null);
   const [newMessage, setNewMessage] = useState(null);
-
+  const [tokenString, setTokenString] = useState(null);
   const [refresh, setRefresh] = useState(false);
 
   const handleRefresh = ()=> {
@@ -61,6 +61,37 @@ export default function SellerProducts() {
     const loggedInUserEmail1 = JSON.parse(tokenString).user.userEmailAddress;
     setLoggedInUserEmail(loggedInUserEmail1);
     
+
+
+    try{
+      const tokenString = localStorage.getItem('authForEcomerce'); 
+      setTokenString(JSON.parse(tokenString));    
+      
+
+      const getSellerDataFromBackEnd = async(token) =>{
+        
+        const id = JSON.parse(tokenString).userId;
+        const response = await axios.get(`http://localhost:3000/seller/${id}`,
+        {
+          headers: {
+             Authorization: `Bearer ${token}`,
+          },
+        }
+        );
+        if(response){
+          setSellerData(response.data);
+          console.log("🏠🏠🏠🏠 from products.js : ::", response.data)
+        }
+      }
+
+      
+      getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
+
+    }catch(err){
+      
+    }
+
+
     // lastMessageRef.current.scrollIntoView({ behavior:"smooth" });//{ behavior: "smooth" }
     // inputRef.current.focus();
   },[])//messageList
@@ -301,7 +332,9 @@ export default function SellerProducts() {
     
       <div className=''>
       
-        <SellerProfile/>
+      <SellerProfile sellerImage={tokenString?.userImage} userId={tokenString?.userId} shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
+
+        {/* <SellerProfile/> */}
         <div className='mx-4 my-4 rounded-md bg-PrimaryColorDarkHover w-auto h-96 text-PureWhite'>
           {/* Conversation */}
           <div className='flex justify-center'>

@@ -13,7 +13,7 @@ export default function ProductCard({product,sellerID}) {
   //console.log("=========",product)
 
   const {id, name, price, productImage} = product;
-  const {sellerId} = sellerID;
+  //const {sellerId} = sellerID; /////////////////// 🔴etar jonno error dicchilo
   const handleDelete = async(productId) => {
     const tokenString = localStorage.getItem('authForEcomerce');    
     const token = JSON.parse(tokenString).accessToken;

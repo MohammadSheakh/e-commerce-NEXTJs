@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '@/layout/navbar';
+import Navbar from '@/pages/layout/navbar';
 import { useRouter } from 'next/router'
 
 import LenovoPc124 from '../../../../../public/images/Products/LenovoPc124.jpg';

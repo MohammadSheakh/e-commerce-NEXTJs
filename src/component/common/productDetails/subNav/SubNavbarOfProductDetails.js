@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react'
 import { FaAlignJustify } from "react-icons/fa";
 import Link from "next/link";
-import Nav from '../../../../layout/Nav.js';
+import Nav from '../../../../pages/layout/Nav.js';
 import { MdLogin, MdNightlight } from "react-icons/md";
 
 export default function SubNavbarOfProductDetails() {

@@ -3,8 +3,8 @@ import { FaAlignJustify } from "react-icons/fa";
 import Link from "next/link";
 import Nav from './Nav';
 import { MdLogin, MdNightlight } from "react-icons/md";
-import logo from "../../public/assets/icons/home/logo.png";
-import mohammad from "../../public/images/navbar/mohammad.jpg";
+import logo from "../../../public/assets/icons/home/logo.png";
+import mohammad from "../../../public/images/navbar/mohammad.jpg";
 import Image from 'next/image';
 import api from '@/utils/api';
 
@@ -20,9 +20,6 @@ const { getUser, checkUser } = useAuth();
  const [user1, setUser1] = useState(null);  // user1 is the user from localstorage from this page
  const [data, setData] = useState(null); 
   const router = useRouter();
-
-  //const {user} = user2;
-
 
     useEffect(() => {
         //console.log("authcontext's user from navbar.js🔰🔰🔰🔰", user);
@@ -44,23 +41,13 @@ const { getUser, checkUser } = useAuth();
             // pull users image from database .. and save it to useState 
 
         }
-    },[])
+    },[]) // user1 ... eta dile prochur refresh hocche 🔴🔴
 
-    useEffect(() => {
-        console.log("user1 from getUsersInfo navbar.js 🔰🔰 ",user1)
-    },[])
+    // useEffect(() => {
+    //     console.log("user1 from getUsersInfo navbar.js 🔰🔰 ",user1)
+    // },[])
 
-//   async function getUsersInfo(){
-//     console.log("user1 from getUsersInfo navbar.js 🔰🔰 ",user1)
-//     try{
-//         console.log("user1?.userId : ", user1?.userId)
-//       const response = await api.get(14);
-//       setData(response.data);
-    
-//     }catch(error){
-//       console.log("error:", error);
-//     }
-//   }
+
 
 //const user1 = null;
   const logout = () => {

@@ -1,11 +1,11 @@
-import Navbar from '@/layout/navbar';
+import Navbar from '@/pages/layout/navbar';
 import { useRouter } from 'next/router'
 import React, { useEffect, useRef, useState } from 'react'
 
 import Image from 'next/image';
 import SubNavbarOfProductDetails from '@/component/common/productDetails/subNav/SubNavbarOfProductDetails';
 import SubNavbarOfSellerProfile from '@/component/seller/subNav/SubNavbarOfSellerProfile';
-import MainCategory from '@/layout/mainCategory';
+import MainCategory from '@/pages/layout/mainCategory';
 import { MdDelete, MdOutlineLocationCity } from "react-icons/md";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { FaLink } from "react-icons/fa";

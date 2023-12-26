@@ -37,6 +37,13 @@ const [searchForm, setSearchForm] = useState({
   search: "",
 });
 
+const [refresh, setRefresh] = useState(false);
+
+  const handleRefresh = ()=> {
+      setRefresh(!refresh);
+  }
+  
+
   useEffect(() => {
     //console.log(router);
     // console.log(sellerId);
@@ -98,16 +105,15 @@ const [searchForm, setSearchForm] = useState({
     }
 
      
-  },[])//sellerId
+  },[])
 
 
   useEffect(()=>{
-    
     const tokenString = localStorage.getItem('authForEcomerce');  
     
     getProductsDataFromBackEnd(JSON.parse(tokenString).accessToken);
     
-  },[]) //products eta likhle server e all time request jacche
+  },[refresh]) // products eta likhle server e all time request jacche 🔴🔴🔴 
 
   const getProductsDataFromBackEnd = async(token) =>{
 
@@ -214,7 +220,10 @@ const onChangeForSearchForm = (e) => {
     });
     if(response){
       // Submit korar shathe shathe Modal ta close korte hobe 🔰
-      console.log("response from addNewProduct : ", response);
+      
+      setTimeout(() => {
+        setRefresh(!refresh);
+      }, 1000);
     }
 
   }

@@ -35,7 +35,6 @@ export default function SellerProducts() {
   //setTimeout(()=> {
     setRefresh(!refresh);
   //},1000)
-  
  }
 
  ////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +49,6 @@ export default function SellerProducts() {
    replyDetails: "",
    reviewId: 0,// review?.reviewId
    sellerId: "", // sellerId from local storage
-
  });
 
  useEffect(()=> {
@@ -221,25 +219,40 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
     }));
   };
 
-  const handleReplySubmit = (e, reviewId) =>{
+  const replySubmit = async(reviewId) => {
     const token = JSON.parse(localStorage.getItem('authForEcomerce')).userId;
     const token2 = JSON.parse(localStorage.getItem('authForEcomerce')).accessToken;
     
-    e.preventDefault();
+    const reviewId1 = reviewId;
+    //e.preventDefault();
     reviewReplyForm.sellerId = token;
-    reviewReplyForm.reviewId = reviewId;
-    console.log("handle reply submit : ", reviewReplyForm);
+    reviewReplyForm.reviewId = reviewId1;
+    console.log("handle reply submit 🔴🔴🔴 : ",  reviewId);// reviewReplyForm
 
     const response = axios.post("http://localhost:3000/seller/addReplyToAReview", reviewReplyForm,{
       headers:{
         Authorization: `bearer ${token2}`
       }
-   
     })
     if(response.data){
-      router.push("/seller/14/review"); 
-      handleRefresh();
+      
+      //router.push("/seller/14/review"); 
+      
     }
+  }
+
+  const handleReplySubmit = (e, reviewId) => {
+    e.preventDefault();
+   // console.log("from handleReplySubmit 🔴🔴🔴🔴🔴: ", reviewId, " ?????e>>> ", e);
+
+    setTimeout(() => {
+      setRefresh(!refresh);
+    }, 1000);
+
+    replySubmit(reviewId);
+
+
+
   }
 
   const likeDislike = async(statusValue, reviewId) => {
@@ -258,21 +271,19 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
       // hoy er basis e like count ta update korbo 
       // othoba db er arekta operation chalabo ekhane
       console.log("====== reponse.data : ", response.data) 
-      setLikeDislikeStatus(!likeDislikeStatus);
-      setTimeout(()=> {
-        setRefresh(!refresh);
-      }, 1000)
+      ////////////////////////////////////////////////🔴🔴🔴//setLikeDislikeStatus(!likeDislikeStatus);
+      
 
     }
   }
 
-  const handleLikeDislike = (e, statusValue) => {
+  const handleLikeDislike = (statusValue, reviewId) => {
     //e.preventDefault();
-    
-    
-
-    likeDislike(statusValue);
-    
+    // console.log("status value : ", statusValue, ":::::", "reviewId : ",reviewId)
+    setTimeout(()=> {
+      setRefresh(!refresh);
+    }, 1000)
+    likeDislike(statusValue, reviewId);
   }
   
 
@@ -538,7 +549,7 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
                     {/* // ekhane reply er input form thakbe ..  */}
                     {/* /////////////////flowbite/////////////////////// */}
                     
-                    <form className='flex  gap-3' onSubmit={(e) => handleReplySubmit(e, review?.reviewId)}>
+                    <form className='flex  gap-3' onSubmit={(e) => handleReplySubmit(e , review?.reviewId)}>
                       
                         <input  type="text" onChange={onChange} id="replyDetails" name='replyDetails' class="bg-gray-50 border  border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Give Reply..." required/>
                         

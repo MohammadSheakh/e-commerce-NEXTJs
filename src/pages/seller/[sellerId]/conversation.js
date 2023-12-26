@@ -44,8 +44,6 @@ export default function SellerProducts() {
     senderEmail: "",
   });
 
-
-
   const [senderEmail, setSenderEmail] = useState(null);
   const [receiverEmail, setReceiverEmail] = useState(null);
 
@@ -61,7 +59,6 @@ export default function SellerProducts() {
     const loggedInUserEmail1 = JSON.parse(tokenString).user.userEmailAddress;
     setLoggedInUserEmail(loggedInUserEmail1);
     
-
 
     try{
       const tokenString = localStorage.getItem('authForEcomerce'); 
@@ -226,8 +223,6 @@ export default function SellerProducts() {
     setTimeout(() => {
       setRefresh(!refresh);
     }, 1000);
-
-    
 
     setSenderEmail(loggedInUserEmail);
     formData.senderEmail = senderEmail;

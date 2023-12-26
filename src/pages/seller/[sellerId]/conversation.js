@@ -62,7 +62,6 @@ export default function SellerProducts() {
     setLoggedInUserEmail(loggedInUserEmail1);
     
 
-
     try{
       const tokenString = localStorage.getItem('authForEcomerce'); 
       setTokenString(JSON.parse(tokenString));    
@@ -226,8 +225,6 @@ export default function SellerProducts() {
     setTimeout(() => {
       setRefresh(!refresh);
     }, 1000);
-
-    
 
     setSenderEmail(loggedInUserEmail);
     formData.senderEmail = senderEmail;

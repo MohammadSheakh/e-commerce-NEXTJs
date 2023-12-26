@@ -18,7 +18,6 @@ export default function ProductCard({product,sellerID}) {
     const tokenString = localStorage.getItem('authForEcomerce');    
     const token = JSON.parse(tokenString).accessToken;
       
-
      // fetch er jaygay axios use korbo 
      const response  =await axios.delete(`http://localhost:3000/seller/product/deleteProduct/${productId}`,
      {
@@ -27,7 +26,7 @@ export default function ProductCard({product,sellerID}) {
         }
      })
      if(response.data == "Successful"){
-      router.push(`/seller/${sellerId}/products`) // seller er id dynamically pass korte hobe
+      router.push(`/seller/${sellerID}/products`) // seller er id dynamically pass korte hobe
      }
   }
 
@@ -45,11 +44,11 @@ export default function ProductCard({product,sellerID}) {
         <div className='rounded-lg object-fill' style={{height:"210px" , overflowBlock: "hidden"}}>
         <Image
         // productImage
-                src={`http://localhost:3000/seller/getProductImage/?imageName=1699863821382IMG20230702114256.jpg`}
+                src={`http://localhost:3000/seller/getProductImage/?imageName=${productImage}`}//productImage 1699863821382IMG20230702114256.jpg
                 width={500}
                 height={500}
                 quality={75} // default is 75
-                alt="Picture of banner"
+                alt="Product Image"
             />
             </div>
         </figure>

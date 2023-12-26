@@ -55,15 +55,18 @@ export default function SellerProfile(props) {
                 />
                   
                   </>):(<>
+                  <div style={{width:"120px", height:"400px"}}>
+
+                  </div>
                   
-                    <Image
+                    {/* <Image
                 className="rounded-lg"
                  src={LenovoPc124}
                 width={120}
                 // height={200}
                 quality={75} // default is 75
                 alt="Picture of banner"
-                />
+                /> */}
                   </>)
                 }
                 

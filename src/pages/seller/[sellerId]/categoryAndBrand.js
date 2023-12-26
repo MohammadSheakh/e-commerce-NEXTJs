@@ -22,6 +22,8 @@ export default function SellerProducts() {
   const [selectedCategoriesFromDB, setSelectedCategoriesFromDB] = useState(null); // from DB 
   const [selectedCategoriesId, setSelectedCategoryId] = useState(null);
   const [onlyNonSelectedCategory, setOnlyNonSelectedCategory] = useState(null); 
+  const [tokenString, setTokenString] = useState(null);
+  const [sellerData, setSellerData] = useState(null);
   useEffect(()=>{
     // ekhane amra category and brand gula DB theke niye ashbo 
     // shegula seller .. tar nijer jonno add korte parbe 
@@ -29,6 +31,31 @@ export default function SellerProducts() {
     try{
       const tokenString = localStorage.getItem('authForEcomerce');    
       
+      
+      setTokenString(JSON.parse(tokenString));    
+      
+
+      const getSellerDataFromBackEnd = async(token) =>{
+        
+        const id = JSON.parse(tokenString).userId;
+        const response = await axios.get(`http://localhost:3000/seller/${id}`,
+        {
+          headers: {
+             Authorization: `Bearer ${token}`,
+          },
+        }
+        );
+        if(response){
+          setSellerData(response.data);
+          console.log("🏠🏠🏠🏠 from products.js : ::", response.data)
+        }
+      }
+
+      
+      getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
+
+     
+
       ///////////////////////////////////////////////
       // Database theke seller er jonno selected category gula load korte hobe .. product_category_seller table theke
       // setSelectCategoriesFromDB()
@@ -228,7 +255,9 @@ export default function SellerProducts() {
 
       <div className=''>
       
-        <SellerProfile/>
+        {/* <SellerProfile/> */}
+        <SellerProfile sellerImage={tokenString?.userImage} userId={tokenString?.userId} shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
+
         <div className='mx-4 my-4 rounded-md bg-PrimaryColorDarkHover w-auto h-auto text-PureWhite'>
           {/* Category And Brand */}
           {/* // add category button thakbe 

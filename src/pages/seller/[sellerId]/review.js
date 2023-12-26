@@ -28,6 +28,8 @@ export default function SellerProducts() {
  const [afterSalesReviews, setAfterSalesReviews] = useState(null);
 
  const [refresh, setRefresh] = useState(false);
+ const [sellerData, setSellerData] = useState(null);
+ const [tokenString, setTokenString] = useState(null);
 
  const handleRefresh = ()=> {
   //setTimeout(()=> {
@@ -50,6 +52,36 @@ export default function SellerProducts() {
    sellerId: "", // sellerId from local storage
 
  });
+
+ useEffect(()=> {
+  try{
+    const tokenString = localStorage.getItem('authForEcomerce'); 
+    setTokenString(JSON.parse(tokenString));    
+    
+
+    const getSellerDataFromBackEnd = async(token) =>{
+      
+      const id = JSON.parse(tokenString).userId;
+      const response = await axios.get(`http://localhost:3000/seller/${id}`,
+      {
+        headers: {
+           Authorization: `Bearer ${token}`,
+        },
+      }
+      );
+      if(response){
+        setSellerData(response.data);
+        console.log("🏠🏠🏠🏠 from products.js : ::", response.data)
+      }
+    }
+
+    
+    getSellerDataFromBackEnd(JSON.parse(tokenString).accessToken);
+
+  }catch(err){
+    
+  }
+ }, [])
 
  const toggleRepliesVisibility = () => {
    setShowAllReplies(!showAllReplies);
@@ -254,8 +286,9 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
 
 
       <div className=''>
-      
-        <SellerProfile/>
+      <SellerProfile sellerImage={tokenString?.userImage} userId={tokenString?.userId} shopName={sellerData?.shopName} offlineShopAddress={sellerData?.offlineShopAddress} shopGoogleMapLink={sellerData?.googleMapLocation}/>
+
+        {/* <SellerProfile/> */}
         <div className=' w-auto h-auto text-PureWhite'>
 
 

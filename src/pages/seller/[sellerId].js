@@ -149,9 +149,6 @@ const handleSubmit = async (e) => {
     setTokenString(tokenString); 
     console.log("sellerData : 🟢",sellerData);  
 
-    
-    
-
       const response = await axios.patch('http://localhost:3000/seller/update/14',
       sellerData
       ,

@@ -160,6 +160,26 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
   }
 
   
+  const handleReplyDelete = async(replyId) => {
+    // console.log("delete clicked");
+    const response = await axios.delete(`http://localhost:3000/seller/deleteReplyByReplyId/${replyId}`,{
+      headers:{
+        Authorization: `bearer ${JSON.parse(localStorage.getItem('authForEcomerce')).accessToken}`
+      }
+    })
+
+    if(response.data){
+      setTimeout(()=> {
+        setRefresh(!refresh);
+      }, 1000)
+      
+      
+     // router.push("/seller/14/review"); 
+    }
+    
+  }
+
+  
   const onChange = (e) => {
     // onChange e validation korte hobe .. 
     console.log(e.target.name, " : ", e.target.value)
@@ -401,9 +421,10 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
 
                   <Image
                     className='rounded-full'
-                    src={LenovoPc124}
-                    width={50}
-                    // height={200}
+                    // src={LenovoPc124}
+                    src={`http://localhost:3000/seller/getLoggedInUserImage/?imageName=${review?.sellerId?.sellerImage}`}
+                    width={60}
+                    height={120}
                     quality={75} // default is 75
                     alt="Picture of user"
                   />
@@ -415,7 +436,7 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
                   </div>
                   </div>
 
-                  <div style={{marginLeft:"70px"}} className='rounded-md relative left-[35px] top-[-15px] ml-9 w-96 h-auto bg-PrimaryColorDark'>
+                  <div style={{marginLeft:"60px", marginTop:"29px"}} className='rounded-md relative left-[35px] top-[-15px] ml-9 w-96 h-auto bg-PrimaryColorDark'>
                           {/* Review Body...........................................
                           .....................................................
                           .....................................................
@@ -427,12 +448,27 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
                   
 
                   {/* //border */}
-                  <div className="max-w-md mx-auto p-4 ">
+                  <div className="max-w-md mx-auto p-1">
                         {review?.replies?.slice(0, showAllReplies ? review?.replies?.length : 1).map((reply, index) => (
-                          <div key={index} className="reply">
+                          <div key={index}  className="flex gap-x-3 my-1" >
+
+                              {/* <Image
+                                                  className='rounded-full'
+                                                  // src={LenovoPc124}
+                                                  src={`http://localhost:3000/seller/getLoggedInUserImage/?imageName=${reply?.sellerId?.sellerImage}`}
+                                                  width={60}
+                                                  height={120}
+                                                  quality={75} // default is 75
+                                                  alt="Picture of user"
+                                                /> */}
+
                             <p>{reply?.sellerId?.sellerName} </p>
                             {/* ?.sellerName */}
-                            <p>{reply.replyDetails}</p>
+                            <p className='border-2 p-1'>{reply.replyDetails}</p>
+                            {/* // Delete Button */}
+                            <button onClick={() => handleReplyDelete(reply?.replyId)} className='ml-3'>
+                              <MdDelete style={{fontSize:"25px", backgroundColor:"lightBlue" ,color: "purple", borderRadius: "5px"}}/>
+                            </button>
                           </div>
                         ))}
                         {review?.replies.length > 1 && (

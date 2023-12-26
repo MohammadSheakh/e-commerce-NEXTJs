@@ -182,25 +182,23 @@ useEffect(() => {
                 
                 <div>
                 <li>
-                    {/* <Image
-                    src={logo}
-                    width={40}
-                    
-                    className='rounded-full ml-3'
-                    quality={75}
-                    alt="Image Can not be shown from navbar.js"
-                    /> */}
 
-            <Image
-        // productImage
-                src={`http://localhost:3000/seller/getLoggedInUserImage/?imageName=1703081540829pc.jpg`}
-                width={50}
-                 height={50}
-                className='rounded-md hidden xl:block'
-                style={{width:"50px", height:"50px"}}
-                quality={75} // default is 75
-                alt="Picture of banner"
-            />
+                {user1?.userId  && (
+                    <>
+                    <Image
+    
+    src={`http://localhost:3000/seller/getLoggedInUserImage/?imageName=${user1?.userImage}`} //1703081540829pc.jpg
+    width={50}
+     height={50}
+    className='rounded-md hidden xl:block'
+    style={{width:"50px", height:"50px"}}
+    quality={75} // default is 75
+    alt=""
+/>
+                    </>
+                )}
+                    
+            
                 </li>
                     
                         

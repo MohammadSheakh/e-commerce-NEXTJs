@@ -532,17 +532,26 @@ const getAllAfterSalesReviewForSeller = async(token) =>{
                   <div style={{marginTop:"20px"}} className='flex gap-3 mt-2'>
                     {/* like dislike buttons  */}
                     <button className='btn' onClick={(e) => handleLikeDislike("like", review?.reviewId)}>
-                    <BiLike />
-                    <BiSolidLike />
 
-                       {/* 5 */}
+                      {
+                        review?.likeDislikeStatus[0].type == "like" ? <BiSolidLike/> : <BiLike/>
+                      }
+                      
+
+                    {/* <BiLike />
+                    <BiSolidLike /> */}
+
+                       
                        {review?.likeCount}
                     </button>
                     {/* onClick={handleDislike} */}
                     <button className='btn'  onClick={(e) => handleLikeDislike("dislike", review?.reviewId)} >
-                    <BiDislike />
-                    <BiSolidDislike />
-                       {/* 5 */}
+                    {
+                        review?.likeDislikeStatus[0].type == "dislike" ? <BiSolidDislike/> : <BiDislike/>
+                      }
+                    {/* <BiDislike />
+                    <BiSolidDislike /> */}
+                       
                        {review?.disLikeCount}
                        </button>
 

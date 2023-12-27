@@ -175,7 +175,7 @@ const handleSubmit = async (e) => {
           console.log("access_token : 🔰 🔰 ", JSON.parse(localStorageData2).accessToken)
           const user = {
             userId: localStorageData.userId,
-            userName: localStorageData.user.userName,
+            userName: sellerData?.sellerName,
             userEmailAddress: localStorageData.user.userEmailAddress,
             accessToken: localStorageData.user.accessToken,
             };

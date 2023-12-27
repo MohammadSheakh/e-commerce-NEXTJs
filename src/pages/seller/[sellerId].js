@@ -161,6 +161,37 @@ const handleSubmit = async (e) => {
       );
       if(response){
         console.log("done after form submitting 🔰🔰 : ",response.data)
+
+        //  jodi image thake tahole sheta localstorage e userImage name update hobe
+        if(sellerImage){
+          //console.log("sellerImage : 🔰 🔰 ", sellerImage)
+          let localStorageData2 = localStorage.getItem('authForEcomerce');
+          let localStorageData = JSON.parse(localStorageData2);
+          localStorageData.userImage = sellerImage; 
+
+          const access_token = JSON.parse(localStorageData2)?.accessToken;
+
+
+          console.log("access_token : 🔰 🔰 ", JSON.parse(localStorageData2).accessToken)
+          const user = {
+            userId: localStorageData.userId,
+            userName: localStorageData.user.userName,
+            userEmailAddress: localStorageData.user.userEmailAddress,
+            accessToken: localStorageData.user.accessToken,
+            };
+
+            
+
+          console.log("user :  🔰 🔰 ", user)
+          localStorage.setItem('authForEcomerce', JSON.stringify({
+            accessToken: access_token,
+            user: user,
+            userId: user.userId,
+            userImage: sellerImage,
+
+        }));
+        }
+
          setTimeout(() => {
           setRefresh(!refresh);
          },1000)
